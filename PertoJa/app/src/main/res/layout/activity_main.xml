@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="#F8F9FA"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Cabeçalho de Boas-Vindas + Botão Meus Pedidos -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="PertoJá ⚡"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="#2563EB"
+                    android:layout_marginBottom="2dp" />
+
+                <TextView
+                    android:id="@+id/txtStatusApi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="✅ API Online (9 profissionais)"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="#16A34A" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnMeuPerfil"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginEnd="6dp"
+                android:text="👤 Perfil"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="#1D4ED8"
+                android:backgroundTint="#DBEAFE"
+                app:cornerRadius="10dp" />
+
+            <Button
+                android:id="@+id/btnMeusAgendamentos"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="📋 Pedidos"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#1E40AF"
+                app:cornerRadius="10dp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Encontre o profissional ideal perto de você em Brasília"
+            android:textSize="14sp"
+            android:textColor="#6B7280"
+            android:layout_marginBottom="14dp" />
+
+        <!-- Barra de Pesquisa Funcional -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="1dp"
+            app:cardBackgroundColor="#FFFFFF"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@android:drawable/ic_menu_search"
+                    app:tint="#9CA3AF" />
+
+                <EditText
+                    android:id="@+id/editBusca"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="12dp"
+                    android:background="@android:color/transparent"
+                    android:hint="Buscar profissional ou especialidade..."
+                    android:singleLine="true"
+                    android:textSize="14sp"
+                    android:textColor="#1F2937"
+                    android:textColorHint="#9CA3AF" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Botão SOS de Emergência -->
+        <Button
+            android:id="@+id/btnSos"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="🚨 SOS - Emergência 24h"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:backgroundTint="#EF4444"
+            app:cornerRadius="12dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Seção de Categorias -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Categorias"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#1F2937"
+            android:layout_marginBottom="12dp" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:layout_marginBottom="20dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnCatEletricista"
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:text="⚡ Eletricista (3)"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#2563EB"
+                    app:cornerRadius="22dp"
+                    android:layout_marginEnd="8dp" />
+
+                <Button
+                    android:id="@+id/btnCatEncanador"
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:text="🔧 Encanador (3)"
+                    android:textColor="#374151"
+                    android:backgroundTint="#E5E7EB"
+                    app:cornerRadius="22dp"
+                    android:layout_marginEnd="8dp" />
+
+                <Button
+                    android:id="@+id/btnCatLimpeza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:text="🧹 Limpeza (3)"
+                    android:textColor="#374151"
+                    android:backgroundTint="#E5E7EB"
+                    app:cornerRadius="22dp" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <!-- Título Dinâmico de Profissionais Disponíveis -->
+        <TextView
+            android:id="@+id/txtTituloLista"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Eletricistas Disponíveis"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#1F2937"
+            android:layout_marginBottom="14dp" />
+
+        <!-- Lista Dinâmica dos 9 Profissionais (Carregados da API com Contador de Avaliações) -->
+        <LinearLayout
+            android:id="@+id/containerPrestadores"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </LinearLayout>
+</ScrollView>

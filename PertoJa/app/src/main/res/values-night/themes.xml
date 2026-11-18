@@ -1,0 +1,8 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Mantém tema claro consistente para garantir legibilidade em qualquer modo do celular -->
+    <style name="Base.Theme.PertoJa" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">#2563EB</item>
+        <item name="android:textColorPrimary">#111827</item>
+        <item name="android:textColorHint">#4B5563</item>
+    </style>
+</resources>

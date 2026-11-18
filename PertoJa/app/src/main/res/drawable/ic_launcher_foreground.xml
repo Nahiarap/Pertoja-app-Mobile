@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Sombra sutil do círculo branco central -->
+    <path
+        android:fillColor="#26000000"
+        android:pathData="M54,28.5 A27.5,27.5 0 1,0 54,83.5 A27.5,27.5 0 1,0 54,28.5 Z" />
+
+    <!-- Círculo branco central (Azul e Branco) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,27 A27,27 0 1,0 54,81 A27,27 0 1,0 54,27 Z" />
+
+    <!-- Anel fino azul interno para destaque -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#DBEAFE"
+        android:strokeWidth="1.5"
+        android:pathData="M54,30.5 A23.5,23.5 0 1,0 54,77.5 A23.5,23.5 0 1,0 54,30.5 Z" />
+
+    <!-- Raio Dourado Central (PertoJá ⚡) -->
+    <path
+        android:pathData="M58.5,33 L40.5,56.5 L52.5,56.5 L48.5,75 L67.5,51 L55,51 Z"
+        android:strokeColor="#D97706"
+        android:strokeWidth="1.2"
+        android:strokeLineJoin="round">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="42"
+                android:startY="33"
+                android:endX="66"
+                android:endY="75"
+                android:type="linear">
+                <item android:color="#FDE047" android:offset="0.0" />
+                <item android:color="#FACC15" android:offset="0.45" />
+                <item android:color="#F59E0B" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+</vector>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:background="#0F172A"
+    android:gravity="center_horizontal"
+    android:padding="28dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="CHAMADA DE VOZ PERTOJÁ"
+        android:textColor="#93C5FD"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="28dp"
+        app:cardCornerRadius="65dp"
+        app:cardElevation="8dp">
+
+        <ImageView
+            android:id="@+id/imgFotoCall"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/castiel" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/txtNomeCall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Castiel Bandeira"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtProfissaoCall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Eletricista Residencial"
+        android:textColor="#94A3B8"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/txtNumeroCall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="(61) 99911-0001"
+        android:textColor="#CBD5E1"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/txtTimerCall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Chamando..."
+        android:textColor="#4ADE80"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Botões de Controle da Ligação -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="28dp">
+
+        <Button
+            android:id="@+id/btnCallMudo"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="#1E293B"
+            android:text="🎤 Mudo"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            app:cornerRadius="16dp" />
+
+        <Button
+            android:id="@+id/btnCallTeclado"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="#1E293B"
+            android:text="🔢 Teclado"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            app:cornerRadius="16dp" />
+
+        <Button
+            android:id="@+id/btnCallVivaVoz"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:backgroundTint="#2563EB"
+            android:text="🔊 Viva-Voz"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            app:cornerRadius="16dp" />
+    </LinearLayout>
+
+    <!-- Botão Vermelho de Desligar -->
+    <Button
+        android:id="@+id/btnDesligarCall"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#EF4444"
+        android:text="📞 Encerrar Chamada"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:cornerRadius="29dp" />
+
+</LinearLayout>

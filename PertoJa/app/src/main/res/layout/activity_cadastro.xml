@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:background="#F8F9FA">
+
+    <!-- Barra Superior com Setinha de Voltar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#FFFFFF"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="8dp"
+        android:elevation="2dp">
+
+        <ImageView
+            android:id="@+id/btnVoltarCadastro"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="12dp"
+            android:contentDescription="Voltar"
+            android:src="@android:drawable/ic_menu_revert"
+            app:tint="#2563EB" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Criar Conta"
+            android:textColor="#111827"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="PertoJá ⚡"
+                android:textColor="#2563EB"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Crie sua conta"
+                android:textColor="#111827"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="14dp"
+                android:text="Cadastre-se para acessar seus pedidos e perfil em qualquer celular."
+                android:textColor="#4B5563"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Quero me cadastrar como:"
+                android:textColor="#111827"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/rgTipoPerfil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rbCliente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:checked="true"
+                    android:text="Cliente"
+                    android:textColor="#111827"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/rbPrestador"
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:layout_marginStart="24dp"
+                    android:text="Prestador de Serviço"
+                    android:textColor="#111827"
+                    android:textSize="14sp" />
+            </RadioGroup>
+
+            <!-- Opções exclusivas quando o cadastro for para Prestador de Serviço -->
+            <LinearLayout
+                android:id="@+id/layoutCategoriaPrestador"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Selecione sua categoria de atuação:"
+                    android:textColor="#111827"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp" />
+
+                <Spinner
+                    android:id="@+id/spinnerCategoriaCadastro"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_spinner"
+                    android:popupBackground="#FFFFFF"
+                    android:paddingHorizontal="12dp"
+                    android:layout_marginBottom="10dp" />
+
+                <EditText
+                    android:id="@+id/etProfissaoPrestador"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_spinner"
+                    android:hint="Especialidade (opcional, ex: Eletricista Residencial)"
+                    android:inputType="textCapSentences"
+                    android:paddingHorizontal="16dp"
+                    android:singleLine="true"
+                    android:textColor="#111827"
+                    android:textColorHint="#4B5563"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="10dp" />
+
+                <EditText
+                    android:id="@+id/etPrecoPrestador"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_spinner"
+                    android:hint="Valor base (opcional, ex: R$ 150,00)"
+                    android:inputType="text"
+                    android:paddingHorizontal="16dp"
+                    android:singleLine="true"
+                    android:textColor="#111827"
+                    android:textColorHint="#4B5563"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/etNomeCadastro"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_spinner"
+                android:hint="Nome completo"
+                android:inputType="textPersonName|textCapWords"
+                android:paddingHorizontal="16dp"
+                android:singleLine="true"
+                android:textColor="#111827"
+                android:textColorHint="#4B5563"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/etEmailCadastro"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_spinner"
+                android:hint="E-mail"
+                android:inputType="textEmailAddress"
+                android:paddingHorizontal="16dp"
+                android:singleLine="true"
+                android:textColor="#111827"
+                android:textColorHint="#4B5563"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/etTelefoneCadastro"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_spinner"
+                android:hint="Telefone / WhatsApp (ex: 61999998888)"
+                android:inputType="phone"
+                android:paddingHorizontal="16dp"
+                android:singleLine="true"
+                android:textColor="#111827"
+                android:textColorHint="#4B5563"
+                android:textSize="14sp" />
+
+            <!-- Senha com Olho Cortado -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_spinner"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="6dp">
+
+                <EditText
+                    android:id="@+id/etSenhaCadastro"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:hint="Senha"
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:textColor="#111827"
+                    android:textColorHint="#4B5563"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/btnOlhoSenhaCad"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="Mostrar ou ocultar senha"
+                    android:src="@drawable/ic_eye_off" />
+            </LinearLayout>
+
+            <!-- Confirmar Senha com Olho Cortado -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_spinner"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="6dp">
+
+                <EditText
+                    android:id="@+id/etConfirmarSenha"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:hint="Confirme sua senha"
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:textColor="#111827"
+                    android:textColorHint="#4B5563"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/btnOlhoConfirmarCad"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="Mostrar ou ocultar confirmação de senha"
+                    android:src="@drawable/ic_eye_off" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnCriarConta"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="#2563EB"
+                android:text="Criar Conta"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvIrLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:text="Já tem uma conta? Entrar"
+                android:textColor="#2563EB"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,9 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Base.Theme.PertoJa" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">#2563EB</item>
+        <item name="android:textColorPrimary">#111827</item>
+        <item name="android:textColorHint">#4B5563</item>
+    </style>
+
+    <style name="Theme.PertoJa" parent="Base.Theme.PertoJa" />
+</resources>

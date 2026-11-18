@@ -1,0 +1,21 @@
+# Arquivos compactados e cópias locais
+*.zip
+*- Copia.docx
+*.log
+
+# Gradle / Build / Android Studio / IntelliJ
+**/.gradle/
+**/build/
+**/.idea/
+*.iml
+**/local.properties
+**/*.apk
+**/*.aab
+**/*.ap_
+
+# Banco JSON local gerado em runtime
+pertoja-api/data/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db

@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PertoJá ⚡ - Aplicativo Mobile + API REST Spring Boot</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        body {
+            background: #0F172A;
+            color: #F8FAFC;
+            display: flex;
+            min-height: 100vh;
+            padding: 18px;
+            gap: 26px;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        /* Moldura do Celular Android */
+        .phone-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .phone-frame {
+            width: 390px;
+            height: 790px;
+            background: #F8F9FA;
+            border: 12px solid #1E293B;
+            border-radius: 42px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6), 0 0 0 2px #334155;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            color: #1F2937;
+        }
+        .status-bar {
+            height: 28px;
+            background: #1E3A8A;
+            color: #FFF;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 18px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .screen {
+            flex: 1;
+            overflow-y: auto;
+            display: none;
+            flex-direction: column;
+            background: #F8F9FA;
+        }
+        .screen.active { display: flex; }
+        .nav-bar {
+            height: 36px;
+            background: #111827;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            color: #9CA3AF;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .nav-bar span { cursor: pointer; padding: 4px 16px; }
+        .nav-bar span:hover { color: #FFF; }
+
+        /* Componentes Visuais Android Material 3 */
+        .toolbar {
+            height: 54px;
+            background: #FFF;
+            display: flex;
+            align-items: center;
+            padding: 0 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            flex-shrink: 0;
+            gap: 8px;
+        }
+        .toolbar .back-btn {
+            color: #2563EB;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+        .toolbar .title {
+            flex: 1;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1F2937;
+        }
+        .content-pad { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+        .input-box {
+            width: 100%;
+            height: 44px;
+            border: 1.5px solid #6B7280;
+            border-radius: 10px;
+            padding: 0 12px;
+            font-size: 13px;
+            font-weight: 500;
+            background: #FFF;
+            color: #111827;
+            outline: none;
+        }
+        .input-box::placeholder { color: #4B5563; }
+        .input-box:focus { border-color: #2563EB; }
+        .btn {
+            width: 100%;
+            height: 46px;
+            border: none;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.15s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn:active { transform: scale(0.98); }
+        .btn-blue { background: #2563EB; color: #FFF; }
+        .btn-red { background: #EF4444; color: #FFF; }
+        .btn-green { background: #16A34A; color: #FFF; }
+        .btn-whatsapp { background: #25D366; color: #FFF; }
+        .btn-dark { background: #111827; color: #FFF; }
+        .btn-outline { background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; }
+
+        .card {
+            background: #FFF;
+            border-radius: 12px;
+            padding: 13px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        .prof-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: transform 0.12s, box-shadow 0.12s;
+        }
+        .prof-card:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(37,99,235,0.15); }
+        .prof-img {
+            width: 58px;
+            height: 58px;
+            border-radius: 14px;
+            object-fit: cover;
+            background: #E5E7EB;
+            flex-shrink: 0;
+        }
+        .cat-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+        .cat-pill {
+            padding: 8px 13px;
+            border-radius: 22px;
+            border: none;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            background: #E5E7EB;
+            color: #374151;
+        }
+        .cat-pill.active { background: #2563EB; color: #FFF; }
+        .chip {
+            display: inline-block;
+            background: #F3F4F6;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 4px 9px;
+            font-size: 11px;
+            color: #374151;
+            margin: 2px 4px 2px 0;
+        }
+
+        /* Seletor Interativo de 1 a 5 Estrelas */
+        .star-picker {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin: 6px 0;
+        }
+        .star-btn {
+            font-size: 28px;
+            cursor: pointer;
+            color: #D1D5DB;
+            transition: transform 0.1s, color 0.1s;
+            user-select: none;
+        }
+        .star-btn.selected { color: #F59E0B; }
+        .star-btn:hover { transform: scale(1.18); }
+
+        /* Tela de Chat do WhatsApp */
+        .wa-header {
+            background: #075E54;
+            color: #FFF;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+        .wa-body {
+            flex: 1;
+            background: #E5DDD5;
+            padding: 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .wa-msg {
+            max-width: 82%;
+            padding: 8px 11px;
+            border-radius: 10px;
+            font-size: 13px;
+            line-height: 1.35;
+            position: relative;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.08);
+        }
+        .wa-msg.received {
+            background: #FFF;
+            color: #111827;
+            align-self: flex-start;
+            border-top-left-radius: 2px;
+        }
+        .wa-msg.sent {
+            background: #DCF8C6;
+            color: #111827;
+            align-self: flex-end;
+            border-top-right-radius: 2px;
+        }
+        .wa-time {
+            font-size: 10px;
+            color: #6B7280;
+            text-align: right;
+            margin-top: 3px;
+        }
+        .wa-quick-bar {
+            background: #F0ECE1;
+            padding: 6px 10px;
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            flex-shrink: 0;
+        }
+        .wa-quick-chip {
+            background: #FFF;
+            border: 1px solid #D1D5DB;
+            border-radius: 14px;
+            padding: 4px 10px;
+            font-size: 11px;
+            color: #075E54;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .wa-footer {
+            background: #F0F0F0;
+            padding: 8px 10px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        /* Tela de Ligação Telefônica */
+        .call-screen {
+            background: linear-gradient(180deg, #0F172A 0%, #1E3A8A 60%, #0F172A 100%);
+            color: #FFF;
+            justify-content: space-between;
+            align-items: center;
+            padding: 42px 24px 36px 24px;
+            text-align: center;
+        }
+        @keyframes pulseRing {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.6); }
+            70% { box-shadow: 0 0 0 22px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+        .call-avatar {
+            width: 116px;
+            height: 116px;
+            border-radius: 58px;
+            object-fit: cover;
+            border: 3px solid #60A5FA;
+            animation: pulseRing 2s infinite;
+        }
+        .call-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            width: 100%;
+            margin-bottom: 18px;
+        }
+        .call-ctrl-btn {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #FFF;
+            border-radius: 16px;
+            padding: 12px 6px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .call-ctrl-btn.active-toggle {
+            background: #2563EB;
+            border-color: #93C5FD;
+        }
+        .hangup-btn {
+            width: 68px;
+            height: 68px;
+            border-radius: 34px;
+            background: #EF4444;
+            color: #FFF;
+            border: none;
+            font-size: 26px;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(239,68,68,0.5);
+        }
+
+        .toast {
+            position: absolute;
+            bottom: 48px;
+            left: 20px;
+            right: 20px;
+            background: rgba(17, 24, 39, 0.94);
+            color: #FFF;
+            padding: 10px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            text-align: center;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        /* Painel Lateral da API Spring Boot */
+        .api-panel {
+            flex: 1;
+            max-width: 660px;
+            background: #1E293B;
+            border-radius: 20px;
+            padding: 22px;
+            border: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .badge-online {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(22, 163, 74, 0.2);
+            color: #4ADE80;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .crud-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .crud-card {
+            background: #0F172A;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 12px;
+        }
+        .method-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            margin-right: 6px;
+        }
+        .m-get { background: #1D4ED8; color: #FFF; }
+        .m-post { background: #15803D; color: #FFF; }
+        .m-put { background: #B45309; color: #FFF; }
+        .m-del { background: #B91C1C; color: #FFF; }
+        .log-box {
+            background: #090D16;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 14px;
+            height: 330px;
+            overflow-y: auto;
+            font-family: Consolas, monospace;
+            font-size: 12px;
+            color: #93C5FD;
+            white-space: pre-wrap;
+        }
+        @media (max-width: 960px) {
+            body { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIMULADOR DO APP ANDROID PERTOJÁ -->
+    <div class="phone-wrapper">
+        <div class="phone-frame">
+            <div class="status-bar">
+                <span>PertoJá Android</span>
+                <span>5G 🔋 100%</span>
+            </div>
+
+            <!-- TELA 0: LOGIN (LoginActivity) -->
+            <div id="screen-login" class="screen active" style="justify-content: center; padding: 26px;">
+                <div style="text-align: center; margin-bottom: 28px;">
+                    <h1 style="color: #2563EB; font-size: 32px;">PertoJá ⚡</h1>
+                    <p style="color: #6B7280; font-size: 14px; margin-top: 6px;">Encontre serviços locais com rapidez</p>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 14px;">
+                    <input id="login-email" class="input-box" type="email" value="nahiara@pertoja.com" placeholder="E-mail" />
+                    <div style="position: relative; display: flex; align-items: center;">
+                        <input id="login-senha" class="input-box" type="password" value="123456" placeholder="Senha" style="padding-right: 40px;" />
+                        <span onclick="toggleSenhaWeb('login-senha', this)" style="position:absolute; right:12px; cursor:pointer; font-size:16px; user-select:none;" title="Mostrar/ocultar senha">🙈</span>
+                    </div>
+                    <button class="btn btn-blue" onclick="fazerLogin()">Entrar</button>
+                    <p style="text-align: center; color: #2563EB; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 8px;" onclick="irParaTela('screen-cadastro')">
+                        Não tem uma conta? Cadastre-se
+                    </p>
+                </div>
+            </div>
+
+            <!-- TELA CADASTRO (CadastroActivity) -->
+            <div id="screen-cadastro" class="screen">
+                <div class="toolbar">
+                    <span class="back-btn" onclick="irParaTela('screen-login')">←</span>
+                    <span class="title">Criar Conta</span>
+                    <span style="width: 24px;"></span>
+                </div>
+                <div class="content-pad">
+                    <h2 style="color: #2563EB; text-align: center; margin-top: 4px;">PertoJá ⚡</h2>
+                    <h3 style="font-size: 20px; color: #1F2937;">Crie sua conta</h3>
+                    <p style="font-size: 12px; color: #4B5563;">Cadastre-se para acessar seus pedidos e perfil em qualquer celular.</p>
+                    <div style="display: flex; gap: 16px; font-size: 13px; font-weight: 600; margin: 4px 0;">
+                        <label><input type="radio" name="tipoPerfil" value="Cliente" checked onchange="toggleCategoriaCadastro()" /> Cliente</label>
+                        <label><input type="radio" name="tipoPerfil" value="Prestador" onchange="toggleCategoriaCadastro()" /> Prestador de Serviço</label>
+                    </div>
+                    <div id="cad-prestador-box" style="display: none; flex-direction: column; gap: 8px; background: #EFF6FF; padding: 10px; border-radius: 10px; border: 1px solid #BFDBFE;">
+                        <label style="font-size: 12px; font-weight: 700; color: #1E3A8A;">Selecione sua categoria de atuação:</label>
+                        <select id="cad-categoria" class="input-box">
+                            <option value="eletricista">⚡ Eletricista</option>
+                            <option value="encanador">🔧 Encanador</option>
+                            <option value="limpeza">🧹 Limpeza</option>
+                        </select>
+                        <input id="cad-profissao" class="input-box" placeholder="Especialidade (opcional, ex: Eletricista Residencial)" />
+                        <input id="cad-preco" class="input-box" placeholder="Valor base (opcional, ex: R$ 150,00)" />
+                    </div>
+                    <input id="cad-nome" class="input-box" placeholder="Nome completo" />
+                    <input id="cad-email" class="input-box" placeholder="E-mail" />
+                    <input id="cad-tel" class="input-box" placeholder="Telefone / WhatsApp (ex: 61999998888)" />
+                    <div style="position: relative; display: flex; align-items: center;">
+                        <input id="cad-senha" type="password" class="input-box" placeholder="Senha" style="padding-right: 40px;" />
+                        <span onclick="toggleSenhaWeb('cad-senha', this)" style="position:absolute; right:12px; cursor:pointer; font-size:16px; user-select:none;" title="Mostrar/ocultar senha">🙈</span>
+                    </div>
+                    <button class="btn btn-blue" onclick="criarContaApi()">Criar Conta</button>
+                    <p style="text-align: center; color: #2563EB; font-size: 13px; font-weight: 700; cursor: pointer; margin-top: 4px;" onclick="irParaTela('screen-login')">
+                        Já tem uma conta? Entrar
+                    </p>
+                </div>
+            </div>
+
+            <!-- TELA 1: HOME (MainActivity) -->
+            <div id="screen-main" class="screen">
+                <div class="content-pad">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h2 style="color: #2563EB; font-size: 22px;">PertoJá ⚡</h2>
+                            <div id="api-badge-home" style="font-size: 11px; font-weight: 700; color: #16A34A;">✅ API Spring Boot Online (9 profissionais)</div>
+                        </div>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="btn" style="width: auto; height: 36px; padding: 0 10px; background: #DBEAFE; color: #1D4ED8; font-size: 11px;" onclick="abrirMeuPerfil()">
+                                👤 Perfil
+                            </button>
+                            <button class="btn" style="width: auto; height: 36px; padding: 0 10px; background: #1E40AF; color: #FFF; font-size: 11px;" onclick="abrirTelaHistoricoPedidos()">
+                                📋 Pedidos (<span id="count-pedidos">2</span>)
+                            </button>
+                        </div>
+                    </div>
+                    <p style="font-size: 12px; color: #6B7280;">Encontre o profissional ideal perto de você em Brasília</p>
+
+                    <input id="busca-input" class="input-box" placeholder="🔍 Buscar nome ou especialidade..." oninput="renderizarPrestadores()" />
+
+                    <button class="btn btn-red" onclick="acionarSosHome()">🚨 SOS - Emergência 24h</button>
+
+                    <div style="font-size: 15px; font-weight: 700;">Categorias</div>
+                    <div class="cat-row">
+                        <button id="cat-eletricista" class="cat-pill active" onclick="selecionarCategoria('eletricista')">⚡ Eletricista (3)</button>
+                        <button id="cat-encanador" class="cat-pill" onclick="selecionarCategoria('encanador')">🔧 Encanador (3)</button>
+                        <button id="cat-limpeza" class="cat-pill" onclick="selecionarCategoria('limpeza')">🧹 Limpeza (3)</button>
+                    </div>
+
+                    <div id="titulo-categoria" style="font-size: 15px; font-weight: 700;">Eletricistas Disponíveis</div>
+                    <div id="lista-prestadores" style="display: flex; flex-direction: column; gap: 10px;"></div>
+                </div>
+            </div>
+
+            <!-- TELA 2: PERFIL DO PROFISSIONAL + AVALIAÇÕES 1 A 5 ESTRELAS (ProfileActivity) -->
+            <div id="screen-profile" class="screen">
+                <div class="toolbar">
+                    <span class="back-btn" onclick="irParaTela('screen-main')">←</span>
+                    <span class="title">Perfil do Profissional</span>
+                    <span style="width: 24px;"></span>
+                </div>
+                <div class="content-pad" style="align-items: center;">
+                    <img id="prof-foto" src="/img/castiel.webp" style="width: 98px; height: 98px; border-radius: 49px; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.15);" />
+                    <h2 id="prof-nome" style="font-size: 19px; text-align: center;">Castiel Bandeira</h2>
+                    <p id="prof-sub" style="font-size: 13px; color: #1F2937; font-weight: 700; text-align: center;"></p>
+                    <p id="prof-dist" style="font-size: 12px; color: #2563EB; font-weight: 700;"></p>
+
+                    <!-- Botões Principais de Ação -->
+                    <button class="btn btn-blue" onclick="abrirAgendamento(false)">📅 Agendar Serviço</button>
+                    <div style="display: flex; gap: 8px; width: 100%;">
+                        <button class="btn btn-whatsapp" style="flex:1;" onclick="abrirChatWhatsapp()">💬 Conversar WhatsApp</button>
+                        <button class="btn btn-dark" style="flex:1;" onclick="abrirTelaLigacao()">📞 Ligar Agora</button>
+                    </div>
+
+                    <div class="card" style="width: 100%;">
+                        <div style="font-weight: 700; margin-bottom: 4px; font-size: 14px;">Sobre o Profissional</div>
+                        <p id="prof-sobre" style="font-size: 12px; color: #4B5563; line-height: 1.4;"></p>
+                    </div>
+
+                    <!-- Card Interativo para Avaliar de 1 a 5 Estrelas direto no Perfil -->
+                    <div class="card" style="width: 100%; border: 1px solid #FDE68A; background: #FFFBEB;">
+                        <div style="font-weight: 700; font-size: 13px; color: #92400E; text-align: center;">
+                            ⭐ Avalie este Profissional (1 a 5 Estrelas)
+                        </div>
+                        <div class="star-picker" id="profile-stars">
+                            <span class="star-btn selected" onclick="selecionarEstrelaPerfil(1)">★</span>
+                            <span class="star-btn selected" onclick="selecionarEstrelaPerfil(2)">★</span>
+                            <span class="star-btn selected" onclick="selecionarEstrelaPerfil(3)">★</span>
+                            <span class="star-btn selected" onclick="selecionarEstrelaPerfil(4)">★</span>
+                            <span class="star-btn selected" onclick="selecionarEstrelaPerfil(5)">★</span>
+                        </div>
+                        <div id="profile-star-label" style="text-align: center; font-size: 11px; font-weight: 700; color: #B45309; margin-bottom: 6px;">
+                            Nota selecionada: 5 de 5 estrelas
+                        </div>
+                        <input id="profile-avaliacao-texto" class="input-box" style="height: 38px; font-size: 12px; margin-bottom: 8px;" placeholder="Escreva um comentário sobre o atendimento..." />
+                        <button class="btn" style="height: 36px; background: #D97706; color: #FFF; font-size: 12px;" onclick="enviarAvaliacaoDiretaPerfil()">
+                            Enviar Avaliação para a API
+                        </button>
+                    </div>
+
+                    <!-- Lista de Avaliações Recebidas pelo Profissional -->
+                    <div class="card" style="width: 100%;">
+                        <div id="prof-aval-header" style="font-weight: 700; font-size: 13px; margin-bottom: 8px; color: #1F2937;">
+                            💬 Avaliações de Clientes (35)
+                        </div>
+                        <div id="prof-lista-avaliacoes" style="display: flex; flex-direction: column; gap: 8px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TELA 3: AGENDAMENTO (ScheduleActivity) -->
+            <div id="screen-schedule" class="screen">
+                <div class="toolbar">
+                    <span class="back-btn" onclick="irParaTela('screen-profile')">←</span>
+                    <span class="title">Agendar Serviço</span>
+                    <span style="width: 24px;"></span>
+                </div>
+                <div class="content-pad">
+                    <div class="card" style="display: flex; align-items: center; gap: 12px;">
+                        <img id="sched-foto" src="/img/castiel.webp" style="width: 48px; height: 48px; border-radius: 24px; object-fit: cover;" />
+                        <div>
+                            <div id="sched-nome" style="font-weight: 700; font-size: 15px;">Castiel Bandeira</div>
+                            <div id="sched-prof" style="font-size: 12px; color: #4B5563;"></div>
+                        </div>
+                    </div>
+
+                    <label style="font-size: 12px; color: #4B5563; font-weight: 600;">Selecione o serviço:</label>
+                    <select id="sched-servico" class="input-box">
+                        <option value="Instalação / Serviço Principal">Serviço Principal</option>
+                        <option value="Manutenção Preventiva">Manutenção Preventiva</option>
+                        <option value="Inspeção e Laudo Técnico">Inspeção e Laudo Técnico</option>
+                        <option value="Reparo Urgente">Reparo Urgente</option>
+                    </select>
+
+                    <div style="display: flex; gap: 8px;">
+                        <div style="flex: 1;">
+                            <label style="font-size: 12px; color: #4B5563; font-weight: 600;">Data:</label>
+                            <input id="sched-data" type="date" class="input-box" value="2026-11-20" />
+                        </div>
+                        <div style="width: 120px;">
+                            <label style="font-size: 12px; color: #4B5563; font-weight: 600;">Horário:</label>
+                            <input id="sched-hora" type="time" class="input-box" value="14:30" onchange="recalcularTotal()" />
+                        </div>
+                    </div>
+
+                    <label style="font-size: 12px; color: #4B5563; font-weight: 600;">Endereço:</label>
+                    <input id="sched-endereco" class="input-box" value="SQS 308 Bloco B, Asa Sul" />
+
+                    <label style="font-size: 12px; color: #4B5563; font-weight: 600;">Descreva o problema:</label>
+                    <input id="sched-problema" class="input-box" value="Tomada e disjuntor precisando de reparo." />
+
+                    <div class="card" style="display: flex; align-items: center; justify-content: space-between;">
+                        <div>
+                            <div style="font-size: 13px; font-weight: 700; color: #DC2626;">🚨 Atendimento de Emergência (SOS)</div>
+                            <div style="font-size: 11px; color: #6B7280;">Taxa de urgência +R$ 100,00 (Noturno 21h-08h: +R$ 50)</div>
+                        </div>
+                        <input id="sched-sos" type="checkbox" style="width: 22px; height: 22px;" onchange="recalcularTotal()" />
+                    </div>
+
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px;">
+                        <div>
+                            <div style="font-size: 12px; color: #6B7280;">Total Estimado:</div>
+                            <div id="sched-total" style="font-size: 18px; font-weight: 800; color: #2563EB;">R$ 150,00</div>
+                        </div>
+                        <button class="btn btn-blue" style="width: auto; padding: 0 20px;" onclick="confirmarAgendamentoPost()">
+                            Confirmar Agendamento
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TELA 4: CONFIRMAÇÃO E AVALIAÇÃO 1 A 5 ESTRELAS (ConfirmationActivity) -->
+            <div id="screen-confirmation" class="screen">
+                <div class="toolbar">
+                    <span class="back-btn" onclick="abrirTelaHistoricoPedidos()">←</span>
+                    <span class="title">Detalhes do Pedido</span>
+                    <span style="font-size: 11px; font-weight: 700; color: #2563EB; cursor:pointer;" onclick="abrirTelaHistoricoPedidos()">Ver Todos</span>
+                </div>
+                <div class="content-pad" style="align-items: center;">
+                    <div style="width: 56px; height: 56px; border-radius: 28px; background: #DCFCE7; color: #16A34A; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: bold;">
+                        ✓
+                    </div>
+                    <h2 id="conf-titulo" style="font-size: 18px; text-align: center;">Pedido #1 - Confirmado</h2>
+
+                    <div class="card" style="width: 100%; display: flex; flex-direction: column; gap: 6px; font-size: 12px;">
+                        <div style="font-weight: 700; font-size: 14px; border-bottom: 1px solid #E5E7EB; padding-bottom: 5px;">Resumo do Pedido</div>
+                        <div>👨‍🔧 <b>Profissional:</b> <span id="conf-prof"></span></div>
+                        <div>🛠️ <b>Serviço:</b> <span id="conf-serv"></span></div>
+                        <div>📅 <b>Data/Hora:</b> <span id="conf-datahora"></span></div>
+                        <div>📍 <b>Endereço:</b> <span id="conf-end"></span></div>
+                        <div>📝 <b>Detalhes:</b> <span id="conf-prob"></span></div>
+                        <div style="border-top: 1px solid #E5E7EB; padding-top: 6px; display: flex; justify-content: space-between; font-size: 14px; font-weight: 800;">
+                            <span>Valor Total:</span>
+                            <span id="conf-valor" style="color: #2563EB;"></span>
+                        </div>
+                    </div>
+
+                    <!-- Atalhos de Contato com o Profissional do Pedido -->
+                    <div style="display: flex; gap: 8px; width: 100%;">
+                        <button class="btn btn-whatsapp" style="flex:1; height: 40px; font-size: 12px;" onclick="abrirChatWhatsappPedido()">💬 WhatsApp</button>
+                        <button class="btn btn-dark" style="flex:1; height: 40px; font-size: 12px;" onclick="abrirLigacaoPedido()">📞 Ligar</button>
+                    </div>
+
+                    <!-- Seletor de 1 a 5 Estrelas para Avaliar o Serviço -->
+                    <div class="card" style="width: 100%; background: #FFFBEB; border: 1px solid #FDE68A;">
+                        <div style="font-weight: 700; font-size: 13px; color: #92400E; text-align: center;">
+                            ⭐ Avaliar Atendimento (1 a 5 Estrelas)
+                        </div>
+                        <div class="star-picker" id="conf-stars">
+                            <span class="star-btn selected" onclick="selecionarEstrelaPedido(1)">★</span>
+                            <span class="star-btn selected" onclick="selecionarEstrelaPedido(2)">★</span>
+                            <span class="star-btn selected" onclick="selecionarEstrelaPedido(3)">★</span>
+                            <span class="star-btn selected" onclick="selecionarEstrelaPedido(4)">★</span>
+                            <span class="star-btn selected" onclick="selecionarEstrelaPedido(5)">★</span>
+                        </div>
+                        <div id="conf-star-label" style="text-align: center; font-size: 11px; font-weight: 700; color: #B45309; margin-bottom: 6px;">
+                            Sua nota: 5 Estrelas
+                        </div>
+                        <input id="conf-comentario-input" class="input-box" style="height: 36px; font-size: 12px; margin-bottom: 8px;" placeholder="Comentário da avaliação (ex: Ótimo serviço!)" />
+                        <button class="btn btn-green" style="height: 40px; font-size: 13px;" onclick="salvarAvaliacaoPut()">
+                            ⭐ Salvar Nota
+                        </button>
+                    </div>
+
+                    <div style="display: flex; gap: 8px; width: 100%;">
+                        <button class="btn btn-red" style="flex:1; height: 42px; font-size: 12px;" onclick="cancelarPedidoDelete()">🗑️ Cancelar</button>
+                        <button class="btn btn-blue" style="flex:1; height: 42px; font-size: 12px;" onclick="abrirTelaHistoricoPedidos()">📋 Ver Todos Pedidos</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TELA 5: HISTÓRICO DE TODOS OS PEDIDOS SALVOS (PedidosActivity) -->
+            <div id="screen-pedidos" class="screen">
+                <div class="toolbar">
+                    <span class="back-btn" onclick="irParaTela('screen-main')">←</span>
+                    <span class="title">📋 Histórico de Pedidos</span>
+                    <span style="width: 24px;"></span>
+                </div>
+                <div class="content-pad">
+                    <p style="font-size: 12px; color: #4B5563;">
+                        Todos os agendamentos realizados ficam salvos abaixo na API Spring Boot. Toque em qualquer pedido para avaliar (1 a 5 ⭐), conversar no WhatsApp, ligar ou cancelar:
+                    </p>
+                    <div id="lista-historico-pedidos" style="display: flex; flex-direction: column; gap: 10px;"></div>
+                    <button class="btn btn-blue" style="margin-top: 8px;" onclick="irParaTela('screen-main')">+ Fazer Novo Agendamento</button>
+                </div>
+            </div>
+
+            <!-- TELA 6: CONVERSA DE WHATSAPP (WhatsAppChatActivity) -->
+            <div id="screen-whatsapp" class="screen">
+                <div class="wa-header">
+                    <span style="font-size: 20px; cursor: pointer; font-weight: bold;" onclick="voltarDeContato()">←</span>
+                    <img id="wa-foto" src="/img/castiel.webp" style="width: 38px; height: 38px; border-radius: 19px; object-fit: cover;" />
+                    <div style="flex: 1;">
+                        <div id="wa-nome" style="font-size: 14px; font-weight: 700;">Castiel Bandeira</div>
+                        <div id="wa-status" style="font-size: 11px; color: #A7F3D0;">● online agora no WhatsApp</div>
+                    </div>
+                    <span style="font-size: 18px; cursor: pointer; padding: 4px 8px;" title="Ligar" onclick="abrirTelaLigacao()">📞</span>
+                </div>
+
+                <div id="wa-chat-body" class="wa-body"></div>
+
+                <div class="wa-quick-bar">
+                    <span class="wa-quick-chip" onclick="enviarMsgRapidaWa('Olá! Você tem disponibilidade para hoje?')">Disponibilidade hoje?</span>
+                    <span class="wa-quick-chip" onclick="enviarMsgRapidaWa('🚨 URGENTE: Preciso de atendimento SOS!')">🚨 SOS Urgente</span>
+                    <span class="wa-quick-chip" onclick="enviarMsgRapidaWa('Pode confirmar o valor do orçamento?')">Confirmar orçamento</span>
+                </div>
+
+                <div class="wa-footer">
+                    <input id="wa-input" class="input-box" style="border-radius: 20px; height: 40px;" placeholder="Digite uma mensagem..." onkeydown="if(event.key==='Enter') enviarMensagemWa()" />
+                    <button class="btn" style="width: 44px; height: 40px; border-radius: 20px; background: #075E54; color: #FFF; font-size: 16px;" onclick="enviarMensagemWa()">➤</button>
+                </div>
+            </div>
+
+            <!-- TELA 7: LIGAÇÃO TELEFÔNICA (PhoneCallActivity) -->
+            <div id="screen-call" class="screen call-screen">
+                <div style="margin-top: 12px;">
+                    <div style="font-size: 12px; color: #93C5FD; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">
+                        Chamada de Voz PertoJá
+                    </div>
+                    <img id="call-foto" class="call-avatar" src="/img/castiel.webp" />
+                    <h2 id="call-nome" style="font-size: 22px; margin-top: 18px;">Castiel Bandeira</h2>
+                    <p id="call-numero" style="font-size: 14px; color: #CBD5E1; margin-top: 4px;">(61) 99911-0001</p>
+                    <div id="call-timer" style="font-size: 16px; font-weight: 700; color: #4ADE80; margin-top: 12px;">
+                        Chamando...
+                    </div>
+                </div>
+
+                <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+                    <div class="call-controls">
+                        <button id="btn-call-mute" class="call-ctrl-btn" onclick="this.classList.toggle('active-toggle')">
+                            <span style="font-size: 20px;">🎤</span>
+                            <span>Mudo</span>
+                        </button>
+                        <button id="btn-call-keypad" class="call-ctrl-btn" onclick="mostrarToast('Teclado numérico ativo')">
+                            <span style="font-size: 20px;">🔢</span>
+                            <span>Teclado</span>
+                        </button>
+                        <button id="btn-call-speaker" class="call-ctrl-btn active-toggle" onclick="this.classList.toggle('active-toggle')">
+                            <span style="font-size: 20px;">🔊</span>
+                            <span>Viva-Voz</span>
+                        </button>
+                    </div>
+                    <button class="hangup-btn" title="Desligar Chamada" onclick="encerrarLigacao()">📞</button>
+                    <span style="font-size: 12px; color: #FCA5A5; margin-top: 8px; font-weight: 600;">Encerrar</span>
+                </div>
+            </div>
+
+            <!-- TELA 8: MEU PERFIL / EDITAR CADASTRO DO CLIENTE -->
+            <div id="screen-meu-perfil" class="screen">
+                <div class="toolbar">
+                    <span class="back-btn" onclick="irParaTela('screen-main')">←</span>
+                    <span class="title">Meu Perfil e Cadastro</span>
+                    <span style="width: 24px;"></span>
+                </div>
+                <div class="content-pad" style="align-items: center;">
+                    <img id="meu-perfil-foto" src="/img/helena.svg" style="width: 96px; height: 96px; border-radius: 48px; object-fit: cover; border: 3px solid #2563EB;" />
+                    <input id="meu-perfil-foto-input" type="file" accept="image/*" style="display:none" onchange="carregarFotoMeuPerfil(event)" />
+                    <button class="btn btn-outline" style="width: auto; height: 36px; padding: 0 14px; font-size: 12px;" onclick="document.getElementById('meu-perfil-foto-input').click()">
+                        📷 Alterar Foto
+                    </button>
+
+                    <div style="width: 100%; display: flex; flex-direction: column; gap: 8px;">
+                        <label style="font-size: 12px; font-weight: 700; color: #1F2937;">Nome completo:</label>
+                        <input id="meu-nome" class="input-box" placeholder="Seu nome" />
+
+                        <label style="font-size: 12px; font-weight: 700; color: #1F2937;">E-mail:</label>
+                        <input id="meu-email" class="input-box" placeholder="Seu e-mail" />
+
+                        <label style="font-size: 12px; font-weight: 700; color: #1F2937;">Telefone / WhatsApp:</label>
+                        <input id="meu-tel" class="input-box" placeholder="(61) 99999-8888" />
+
+                        <label style="font-size: 12px; font-weight: 700; color: #1F2937;">Tipo de Conta:</label>
+                        <select id="meu-tipo" class="input-box">
+                            <option value="Cliente">Cliente</option>
+                            <option value="Prestador">Prestador</option>
+                        </select>
+
+                        <label style="font-size: 12px; font-weight: 700; color: #1F2937;">Nova Senha (opcional):</label>
+                        <div style="position: relative; display: flex; align-items: center;">
+                            <input id="meu-senha" type="password" class="input-box" placeholder="Deixe vazio para manter a atual" style="padding-right: 40px;" />
+                            <span onclick="toggleSenhaWeb('meu-senha', this)" style="position:absolute; right:12px; cursor:pointer; font-size:16px; user-select:none;" title="Mostrar/ocultar senha">🙈</span>
+                        </div>
+
+                        <button class="btn btn-green" style="margin-top: 6px;" onclick="salvarMeuPerfil()">💾 Salvar Alterações</button>
+                        <button class="btn btn-red" onclick="sairDaConta()">🚪 Sair da Conta</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="toast" class="toast"></div>
+
+            <div class="nav-bar">
+                <span title="Voltar" onclick="irParaTela('screen-main')">◀</span>
+                <span title="Início" onclick="irParaTela('screen-main')">●</span>
+                <span title="Histórico de Pedidos" onclick="abrirTelaHistoricoPedidos()">■</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAINEL DE MONITORAMENTO DA API SPRING BOOT (CRUD) -->
+    <div class="api-panel">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h2 style="font-size: 20px;">⚙️ Painel da API REST (Spring Boot)</h2>
+                <p style="font-size: 13px; color: #94A3B8;">Equipe: Luiza Santiago, Nahiara Torreão e Carlos Eduardo (Cadu)</p>
+            </div>
+            <span class="badge-online">● PORTA 8080 ATIVA</span>
+        </div>
+
+        <div class="crud-grid">
+            <div class="crud-card">
+                <span class="method-tag m-get">GET</span> <b>READ (Leitura)</b>
+                <p style="font-size: 12px; color: #94A3B8; margin-top: 4px;">Lista os 9 prestadores (com média e total de avaliações) e todos os pedidos do histórico.</p>
+                <button class="btn btn-blue" style="height: 34px; font-size: 12px; margin-top: 8px;" onclick="testarEndpoint('GET', '/api/prestadores')">Ver JSON Prestadores (9)</button>
+            </div>
+            <div class="crud-card">
+                <span class="method-tag m-post">POST</span> <b>CREATE (Criação)</b>
+                <p style="font-size: 12px; color: #94A3B8; margin-top: 4px;">Salva novos agendamentos no histórico, usuários e novas avaliações de 1 a 5 estrelas.</p>
+                <button class="btn btn-green" style="height: 34px; font-size: 12px; margin-top: 8px;" onclick="testarEndpoint('GET', '/api/agendamentos')">Ver Todos os Pedidos JSON</button>
+            </div>
+            <div class="crud-card">
+                <span class="method-tag m-put">PUT</span> <b>UPDATE (Atualização)</b>
+                <p style="font-size: 12px; color: #94A3B8; margin-top: 4px;">Registra nota de 1 a 5 ⭐ no pedido e recalcula a média e quantidade de avaliações do prestador.</p>
+            </div>
+            <div class="crud-card">
+                <span class="method-tag m-del">DELETE</span> <b>DELETE (Exclusão)</b>
+                <p style="font-size: 12px; color: #94A3B8; margin-top: 4px;">Cancela e remove um agendamento específico do histórico pelo ID.</p>
+            </div>
+        </div>
+
+        <div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; font-weight: 700;">
+                <span>📡 Console ao Vivo de Requisições HTTP / JSON:</span>
+                <a href="/api/status" target="_blank" style="color: #60A5FA; text-decoration: none;">Abrir /api/status ↗</a>
+            </div>
+            <div id="api-log" class="log-box">Aguardando interações no aplicativo...</div>
+        </div>
+    </div>
+
+    <script>
+        let usuarioLogado = null;
+        let prestadores = [];
+        let agendamentos = [];
+        let categoriaSelecionada = 'eletricista';
+        let prestadorAtual = null;
+        let pedidoAtual = null;
+        let notaSelecionadaPerfil = 5;
+        let notaSelecionadaPedido = 5;
+        let telaAnteriorContato = 'screen-profile';
+        let callInterval = null;
+        let callSeconds = 0;
+        let historicoConversasWa = {};
+
+        function registrarLog(metodo, url, dados) {
+            const box = document.getElementById('api-log');
+            const hora = new Date().toLocaleTimeString();
+            box.textContent = `[${hora}] ${metodo} http://localhost:8080${url}\n` + JSON.stringify(dados, null, 2) + `\n\n----------------------------------------\n` + box.textContent;
+        }
+
+        function mostrarToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.style.display = 'block';
+            setTimeout(() => { t.style.display = 'none'; }, 2800);
+        }
+
+        function irParaTela(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            if (id === 'screen-main') {
+                carregarDadosApi();
+            }
+        }
+
+        function obterFotoUrl(chave) {
+            const mapa = {
+                castiel: '/img/castiel.webp',
+                dean: '/img/dean.jpg',
+                samuelspn: '/img/samuel.webp',
+                bobby: '/img/bobby.svg',
+                carlos: '/img/carlos.svg',
+                rafael: '/img/rafael.svg',
+                charlie: '/img/charlie.svg',
+                helena: '/img/helena.svg',
+                camila: '/img/camila.svg'
+            };
+            return mapa[chave] || '/img/castiel.webp';
+        }
+
+        async function fazerLogin() {
+            const email = document.getElementById('login-email').value.trim();
+            const senha = document.getElementById('login-senha').value.trim();
+            if (!email || !senha) return mostrarToast('Preencha e-mail e senha!');
+            const res = await fetch('/api/usuarios/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({email, senha})
+            });
+            const data = await res.json();
+            registrarLog(`POST (${res.status})`, '/api/usuarios/login', data);
+            if (!res.ok) {
+                return alert(data.erro || 'E-mail ou senha inválidos! Cadastre-se primeiro.');
+            }
+            usuarioLogado = data;
+            mostrarToast(`Bem-vindo(a), ${usuarioLogado.nome}!`);
+            irParaTela('screen-main');
+        }
+
+        async function criarContaApi() {
+            const nome = document.getElementById('cad-nome').value.trim();
+            const email = document.getElementById('cad-email').value.trim();
+            const telefone = document.getElementById('cad-tel').value.trim();
+            const senha = document.getElementById('cad-senha').value.trim();
+            const tipoPerfil = document.querySelector('input[name="tipoPerfil"]:checked').value;
+            if (!nome || !email || !senha) return mostrarToast('Preencha nome, e-mail e senha!');
+
+            const payload = { nome, email, telefone, senha, tipoPerfil };
+            if (tipoPerfil === 'Prestador') {
+                payload.categoria = document.getElementById('cad-categoria').value;
+                payload.profissao = document.getElementById('cad-profissao').value.trim();
+                payload.precoBase = document.getElementById('cad-preco').value.trim();
+            }
+
+            const res = await fetch('/api/usuarios', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+            const criado = await res.json();
+            registrarLog(`POST (${res.status})`, '/api/usuarios', criado);
+            if (!res.ok) {
+                return alert(criado.erro || 'Não foi possível criar a conta.');
+            }
+            mostrarToast(`✅ Conta #${criado.id} criada! Faça login para entrar.`);
+            document.getElementById('login-email').value = email;
+            document.getElementById('login-senha').value = '';
+            irParaTela('screen-login');
+        }
+
+        async function abrirMeuPerfil() {
+            if (!usuarioLogado) {
+                return irParaTela('screen-login');
+            }
+            const res = await fetch(`/api/usuarios/${usuarioLogado.id}`);
+            if (res.ok) {
+                usuarioLogado = await res.json();
+            }
+            document.getElementById('meu-nome').value = usuarioLogado.nome || '';
+            document.getElementById('meu-email').value = usuarioLogado.email || '';
+            document.getElementById('meu-tel').value = usuarioLogado.telefone || '';
+            document.getElementById('meu-tipo').value = usuarioLogado.tipoPerfil || 'Cliente';
+            document.getElementById('meu-senha').value = '';
+            document.getElementById('meu-perfil-foto').src = usuarioLogado.fotoBase64
+                ? `data:image/jpeg;base64,${usuarioLogado.fotoBase64}`
+                : '/img/helena.svg';
+            irParaTela('screen-meu-perfil');
+        }
+
+        function carregarFotoMeuPerfil(event) {
+            const file = event.target.files[0];
+            if (!file || !usuarioLogado) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const scale = Math.min(200 / img.width, 200 / img.height);
+                    canvas.width = Math.max(1, Math.round(img.width * scale));
+                    canvas.height = Math.max(1, Math.round(img.height * scale));
+                    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.75);
+                    usuarioLogado.fotoBase64 = dataUrl.split(',')[1];
+                    document.getElementById('meu-perfil-foto').src = dataUrl;
+                    mostrarToast('Foto carregada! Clique em Salvar Alterações.');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function salvarMeuPerfil() {
+            if (!usuarioLogado) return;
+            const payload = {
+                nome: document.getElementById('meu-nome').value.trim(),
+                email: document.getElementById('meu-email').value.trim(),
+                telefone: document.getElementById('meu-tel').value.trim(),
+                tipoPerfil: document.getElementById('meu-tipo').value,
+                fotoBase64: usuarioLogado.fotoBase64 || '',
+                fotoAvatar: usuarioLogado.fotoAvatar || 'default'
+            };
+            const novaSenha = document.getElementById('meu-senha').value.trim();
+            if (novaSenha) payload.senha = novaSenha;
+
+            const res = await fetch(`/api/usuarios/${usuarioLogado.id}`, {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+            const atualizado = await res.json();
+            registrarLog('PUT (PERFIL USUÁRIO)', `/api/usuarios/${usuarioLogado.id}`, atualizado);
+            if (!res.ok) {
+                return alert(atualizado.erro || 'Erro ao salvar perfil.');
+            }
+            usuarioLogado = atualizado;
+            document.getElementById('meu-senha').value = '';
+            mostrarToast('✅ Perfil salvo com persistência no servidor!');
+        }
+
+        function sairDaConta() {
+            usuarioLogado = null;
+            document.getElementById('login-senha').value = '';
+            irParaTela('screen-login');
+            mostrarToast('Você saiu da conta.');
+        }
+
+        function toggleCategoriaCadastro() {
+            const tipo = document.querySelector('input[name="tipoPerfil"]:checked').value;
+            document.getElementById('cad-prestador-box').style.display = (tipo === 'Prestador') ? 'flex' : 'none';
+        }
+
+        function toggleSenhaWeb(inputId, iconEl) {
+            const inp = document.getElementById(inputId);
+            if (!inp) return;
+            if (inp.type === 'password') {
+                inp.type = 'text';
+                iconEl.textContent = '👁️';
+            } else {
+                inp.type = 'password';
+                iconEl.textContent = '🙈';
+            }
+        }
+
+        async function carregarDadosApi() {
+            const r1 = await fetch('/api/prestadores');
+            prestadores = await r1.json();
+
+            const queryEmail = (usuarioLogado && usuarioLogado.email) ? `?emailCliente=${encodeURIComponent(usuarioLogado.email)}` : '';
+            const r2 = await fetch('/api/agendamentos' + queryEmail);
+            agendamentos = await r2.json();
+
+            document.getElementById('count-pedidos').textContent = agendamentos.length;
+            document.getElementById('api-badge-home').textContent = `✅ API Online (${prestadores.length} profissionais • ${agendamentos.length} pedidos)`;
+
+            const cEle = prestadores.filter(p => p.categoria === 'eletricista').length;
+            const cEnc = prestadores.filter(p => p.categoria === 'encanador').length;
+            const cLimp = prestadores.filter(p => p.categoria === 'limpeza').length;
+            document.getElementById('cat-eletricista').textContent = `⚡ Eletricista (${cEle})`;
+            document.getElementById('cat-encanador').textContent = `🔧 Encanador (${cEnc})`;
+            document.getElementById('cat-limpeza').textContent = `🧹 Limpeza (${cLimp})`;
+
+            renderizarPrestadores();
+        }
+
+        function selecionarCategoria(cat) {
+            categoriaSelecionada = cat;
+            ['eletricista', 'encanador', 'limpeza'].forEach(c => {
+                document.getElementById('cat-' + c).classList.toggle('active', c === cat);
+            });
+            const titulos = {
+                eletricista: 'Eletricistas Disponíveis',
+                encanador: 'Encanadores Disponíveis',
+                limpeza: 'Profissionais de Limpeza Disponíveis'
+            };
+            document.getElementById('titulo-categoria').textContent = titulos[cat];
+            renderizarPrestadores();
+        }
+
+        function renderizarPrestadores() {
+            const termo = document.getElementById('busca-input').value.trim().toLowerCase();
+            const cont = document.getElementById('lista-prestadores');
+            cont.innerHTML = '';
+
+            const filtrados = prestadores.filter(p => {
+                if (termo) {
+                    return p.nome.toLowerCase().includes(termo) || p.profissao.toLowerCase().includes(termo) || p.categoria.toLowerCase().includes(termo);
+                }
+                return p.categoria === categoriaSelecionada;
+            });
+
+            filtrados.forEach(p => {
+                const div = document.createElement('div');
+                div.className = 'card prof-card';
+                div.onclick = () => abrirPerfil(p.id);
+                div.innerHTML = `
+                    <img class="prof-img" src="${obterFotoUrl(p.fotoChave)}" />
+                    <div style="flex: 1;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-weight: 700; font-size: 14px;">${p.nome}</span>
+                            <span style="font-weight: 800; font-size: 13px; color: #2563EB;">${p.precoBase}</span>
+                        </div>
+                        <div style="font-size: 12px; color: #4B5563; margin-top: 2px;">${p.profissao}</div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                            <span style="font-size: 12px; font-weight: 700; color: #D97706;">⭐ ${p.avaliacao.toFixed(1)} (${p.avaliacoesCount} avaliações)</span>
+                            <span style="font-size: 11px; color: #2563EB;">📍 ${p.distancia.split('•')[0]}</span>
+                        </div>
+                    </div>
+                `;
+                cont.appendChild(div);
+            });
+        }
+
+        async function abrirPerfil(idOuObj) {
+            await carregarDadosApi();
+            if (typeof idOuObj === 'object') {
+                prestadorAtual = prestadores.find(x => x.id === idOuObj.id) || idOuObj;
+            } else {
+                prestadorAtual = prestadores.find(x => x.id === idOuObj) || prestadores[0];
+            }
+            atualizarDOMPerfil(prestadorAtual);
+            selecionarEstrelaPerfil(5);
+            irParaTela('screen-profile');
+        }
+
+        function atualizarDOMPerfil(p) {
+            document.getElementById('prof-foto').src = obterFotoUrl(p.fotoChave);
+            document.getElementById('prof-nome').textContent = p.nome;
+            document.getElementById('prof-sub').textContent = `${p.profissao} • ⭐ ${p.avaliacao.toFixed(1)} (${p.avaliacoesCount} avaliações) • ${p.precoBase}`;
+            document.getElementById('prof-dist').textContent = `📍 ${p.distancia} • 📞 ${p.telefone || '(61) 99911-0001'}`;
+            document.getElementById('prof-sobre').textContent = p.sobre;
+            document.getElementById('prof-aval-header').textContent = `💬 Avaliações de Clientes (${p.avaliacoesCount} avaliações no total)`;
+
+            const listaEl = document.getElementById('prof-lista-avaliacoes');
+            listaEl.innerHTML = '';
+            const avals = p.avaliacoesLista || [];
+            avals.forEach(a => {
+                const estrelasStr = '★'.repeat(a.estrelas) + '☆'.repeat(5 - a.estrelas);
+                const fotoSrc = (a.fotoBase64 && a.fotoBase64.length > 0)
+                    ? `data:image/jpeg;base64,${a.fotoBase64}`
+                    : obterFotoUrl(a.fotoCliente || 'helena');
+                const item = document.createElement('div');
+                item.style.cssText = 'border-bottom: 1px solid #F3F4F6; padding-bottom: 8px; font-size: 12px; display: flex; gap: 10px; align-items: flex-start;';
+                item.innerHTML = `
+                    <img src="${fotoSrc}" style="width: 34px; height: 34px; border-radius: 17px; object-fit: cover; flex-shrink: 0; border: 1px solid #E5E7EB;" />
+                    <div style="flex: 1;">
+                        <div style="display: flex; justify-content: space-between; font-weight: 700;">
+                            <span>${a.cliente}</span>
+                            <span style="color: #F59E0B;">${estrelasStr} (${a.estrelas}/5)</span>
+                        </div>
+                        <div style="color: #4B5563; margin-top: 2px;">"${a.comentario}"</div>
+                        <div style="color: #9CA3AF; font-size: 10px; margin-top: 2px;">${a.data}</div>
+                    </div>
+                `;
+                listaEl.appendChild(item);
+            });
+        }
+
+        function selecionarEstrelaPerfil(n) {
+            notaSelecionadaPerfil = n;
+            const stars = document.querySelectorAll('#profile-stars .star-btn');
+            stars.forEach((s, idx) => s.classList.toggle('selected', idx < n));
+            document.getElementById('profile-star-label').textContent = `Nota selecionada: ${n} de 5 estrela${n > 1 ? 's' : ''}`;
+        }
+
+        async function enviarAvaliacaoDiretaPerfil() {
+            if (!prestadorAtual) return;
+            const comentario = document.getElementById('profile-avaliacao-texto').value.trim() || `Excelente atendimento (${notaSelecionadaPerfil} estrelas)!`;
+            const body = {
+                cliente: (usuarioLogado && usuarioLogado.nome) ? usuarioLogado.nome : 'Cliente PertoJá',
+                emailCliente: (usuarioLogado && usuarioLogado.email) ? usuarioLogado.email : '',
+                estrelas: notaSelecionadaPerfil,
+                comentario: comentario,
+                fotoCliente: (usuarioLogado && usuarioLogado.fotoAvatar) ? usuarioLogado.fotoAvatar : 'helena',
+                fotoBase64: (usuarioLogado && usuarioLogado.fotoBase64) ? usuarioLogado.fotoBase64 : ''
+            };
+            const res = await fetch(`/api/prestadores/${prestadorAtual.id}/avaliar`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(body)
+            });
+            prestadorAtual = await res.json();
+            registrarLog('POST (AVALIAÇÃO 1-5⭐)', `/api/prestadores/${prestadorAtual.id}/avaliar`, prestadorAtual);
+            document.getElementById('profile-avaliacao-texto').value = '';
+            atualizarDOMPerfil(prestadorAtual);
+            mostrarToast(`⭐ Avaliação de ${notaSelecionadaPerfil} estrelas salva! Total: ${prestadorAtual.avaliacoesCount} avaliações.`);
+        }
+
+        /* TELA DE CONVERSA DO WHATSAPP */
+        function abrirChatWhatsapp() {
+            if (!prestadorAtual) prestadorAtual = prestadores[0];
+            telaAnteriorContato = 'screen-profile';
+            iniciarChatWhatsappCom(prestadorAtual);
+        }
+
+        function abrirChatWhatsappPedido() {
+            if (!pedidoAtual) return;
+            const p = prestadores.find(x => x.nome === pedidoAtual.nomePrestador) || prestadores[0];
+            prestadorAtual = p;
+            telaAnteriorContato = 'screen-confirmation';
+            iniciarChatWhatsappCom(p);
+        }
+
+        function iniciarChatWhatsappCom(p) {
+            document.getElementById('wa-foto').src = obterFotoUrl(p.fotoChave);
+            document.getElementById('wa-nome').textContent = p.nome;
+            document.getElementById('wa-status').textContent = `● online • ${p.profissao}`;
+
+            if (!historicoConversasWa[p.nome]) {
+                historicoConversasWa[p.nome] = [
+                    { tipo: 'received', texto: `Olá! Sou ${p.nome} (${p.profissao} no PertoJá). Como posso te ajudar hoje?`, hora: '14:20' }
+                ];
+            }
+            renderizarMensagensWa(p.nome);
+            irParaTela('screen-whatsapp');
+        }
+
+        function renderizarMensagensWa(nomeProf) {
+            const body = document.getElementById('wa-chat-body');
+            body.innerHTML = '';
+            (historicoConversasWa[nomeProf] || []).forEach(m => {
+                const div = document.createElement('div');
+                div.className = 'wa-msg ' + m.tipo;
+                div.innerHTML = `
+                    <div>${m.texto}</div>
+                    <div class="wa-time">${m.hora} ${m.tipo === 'sent' ? '✓✓' : ''}</div>
+                `;
+                body.appendChild(div);
+            });
+            body.scrollTop = body.scrollHeight;
+        }
+
+        function enviarMsgRapidaWa(texto) {
+            document.getElementById('wa-input').value = texto;
+            enviarMensagemWa();
+        }
+
+        function enviarMensagemWa() {
+            const input = document.getElementById('wa-input');
+            const texto = input.value.trim();
+            if (!texto || !prestadorAtual) return;
+            const nomeProf = prestadorAtual.nome;
+            const horaAtual = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+            historicoConversasWa[nomeProf].push({ tipo: 'sent', texto, hora: horaAtual });
+            input.value = '';
+            renderizarMensagensWa(nomeProf);
+
+            setTimeout(() => {
+                let resposta = `Perfeito! Meu valor base é ${prestadorAtual.precoBase} e estou ${prestadorAtual.distancia.split('•')[0]}. Posso te atender no horário combinado!`;
+                if (texto.toLowerCase().includes('sos') || texto.toLowerCase().includes('urgente')) {
+                    resposta = `🚨 Recebi seu chamado SOS! Já estou separando as ferramentas e saio em 10 minutos para o seu endereço!`;
+                } else if (texto.toLowerCase().includes('hoje')) {
+                    resposta = `Tenho vaga hoje sim! Pode confirmar o agendamento pelo PertoJá que já vou até você.`;
+                }
+                historicoConversasWa[nomeProf].push({ tipo: 'received', texto: resposta, hora: horaAtual });
+                renderizarMensagensWa(nomeProf);
+            }, 700);
+        }
+
+        /* TELA DE LIGAÇÃO TELEFÔNICA */
+        function abrirTelaLigacao() {
+            if (!prestadorAtual) prestadorAtual = prestadores[0];
+            telaAnteriorContato = 'screen-profile';
+            iniciarLigacaoCom(prestadorAtual);
+        }
+
+        function abrirLigacaoPedido() {
+            if (!pedidoAtual) return;
+            const p = prestadores.find(x => x.nome === pedidoAtual.nomePrestador) || prestadores[0];
+            prestadorAtual = p;
+            telaAnteriorContato = 'screen-confirmation';
+            iniciarLigacaoCom(p);
+        }
+
+        function iniciarLigacaoCom(p) {
+            document.getElementById('call-foto').src = obterFotoUrl(p.fotoChave);
+            document.getElementById('call-nome').textContent = p.nome;
+            document.getElementById('call-numero').textContent = p.telefone || '(61) 99911-0001';
+            document.getElementById('call-timer').textContent = 'Chamando...';
+            callSeconds = 0;
+            if (callInterval) clearInterval(callInterval);
+            callInterval = setInterval(() => {
+                callSeconds++;
+                const min = String(Math.floor(callSeconds / 60)).padStart(2, '0');
+                const sec = String(callSeconds % 60).padStart(2, '0');
+                document.getElementById('call-timer').textContent = `Em chamada • ${min}:${sec}`;
+            }, 1000);
+            irParaTela('screen-call');
+        }
+
+        function encerrarLigacao() {
+            if (callInterval) clearInterval(callInterval);
+            mostrarToast('Chamada encerrada.');
+            voltarDeContato();
+        }
+
+        function voltarDeContato() {
+            irParaTela(telaAnteriorContato || 'screen-main');
+        }
+
+        /* AGENDAMENTO E CÁLCULO SOS / NOTURNO */
+        function acionarSosHome() {
+            prestadorAtual = prestadores[0];
+            abrirAgendamento(true);
+            mostrarToast('🚨 Modo SOS 24h ativado (+R$ 100,00)');
+        }
+
+        function abrirAgendamento(sosAtivo) {
+            if (!prestadorAtual) prestadorAtual = prestadores[0];
+            document.getElementById('sched-foto').src = obterFotoUrl(prestadorAtual.fotoChave);
+            document.getElementById('sched-nome').textContent = prestadorAtual.nome;
+            document.getElementById('sched-prof').textContent = `${prestadorAtual.profissao} • ⭐ ${prestadorAtual.avaliacao.toFixed(1)} (${prestadorAtual.avaliacoesCount} avaliações) • ${prestadorAtual.precoBase}`;
+            document.getElementById('sched-sos').checked = !!sosAtivo;
+            recalcularTotal();
+            irParaTela('screen-schedule');
+        }
+
+        function recalcularTotal() {
+            if (!prestadorAtual) return;
+            const limpo = prestadorAtual.precoBase.replace('R$', '').replace('.', '').replace(',', '.').trim();
+            let base = parseFloat(limpo) || 150;
+            const isSos = document.getElementById('sched-sos').checked;
+            const horaStr = document.getElementById('sched-hora').value || '14:30';
+            const hora = parseInt(horaStr.split(':')[0], 10);
+            const isNoturno = (hora >= 21 || hora < 8);
+            if (isNoturno) mostrarToast('🌙 Adicional Noturno aplicado (21h às 08h): +R$ 50,00');
+            const total = base + (isSos ? 100 : 0) + (isNoturno ? 50 : 0);
+            document.getElementById('sched-total').textContent = 'R$ ' + total.toFixed(2).replace('.', ',');
+        }
+
+        async function confirmarAgendamentoPost() {
+            const payload = {
+                nomeCliente: (usuarioLogado && usuarioLogado.nome) ? usuarioLogado.nome : 'Cliente PertoJá',
+                emailCliente: (usuarioLogado && usuarioLogado.email) ? usuarioLogado.email : '',
+                nomePrestador: prestadorAtual.nome,
+                profissaoPrestador: prestadorAtual.profissao,
+                servico: document.getElementById('sched-servico').value + (document.getElementById('sched-sos').checked ? ' (SOS 24h)' : ''),
+                data: document.getElementById('sched-data').value,
+                horario: document.getElementById('sched-hora').value,
+                endereco: document.getElementById('sched-endereco').value,
+                descricaoProblema: document.getElementById('sched-problema').value,
+                emergenciaSos: document.getElementById('sched-sos').checked,
+                valorTotal: document.getElementById('sched-total').textContent,
+                status: 'Confirmado'
+            };
+
+            const res = await fetch('/api/agendamentos', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+            pedidoAtual = await res.json();
+            registrarLog('POST (CREATE)', '/api/agendamentos', pedidoAtual);
+            await carregarDadosApi();
+            mostrarToast(`✅ Pedido #${pedidoAtual.id} salvo! Total no histórico: ${agendamentos.length}`);
+            preencherTelaConfirmacao(pedidoAtual);
+            irParaTela('screen-confirmation');
+        }
+
+        function preencherTelaConfirmacao(p) {
+            pedidoAtual = p;
+            document.getElementById('conf-titulo').textContent = `Pedido #${p.id} - ${p.status}`;
+            document.getElementById('conf-prof').textContent = p.nomePrestador;
+            document.getElementById('conf-serv').textContent = p.servico;
+            document.getElementById('conf-datahora').textContent = `${p.data} às ${p.horario}`;
+            document.getElementById('conf-end').textContent = p.endereco;
+            document.getElementById('conf-prob').textContent = p.descricaoProblema;
+            document.getElementById('conf-valor').textContent = p.valorTotal;
+            selecionarEstrelaPedido(p.avaliacaoNota || 5);
+            document.getElementById('conf-comentario-input').value = p.avaliacaoComentario || '';
+        }
+
+        function selecionarEstrelaPedido(n) {
+            notaSelecionadaPedido = n;
+            const stars = document.querySelectorAll('#conf-stars .star-btn');
+            stars.forEach((s, idx) => s.classList.toggle('selected', idx < n));
+            document.getElementById('conf-star-label').textContent = `Sua nota: ${n} de 5 Estrela${n > 1 ? 's' : ''} (${'★'.repeat(n)})`;
+        }
+
+        async function salvarAvaliacaoPut() {
+            if (!pedidoAtual) return;
+            const comentario = document.getElementById('conf-comentario-input').value.trim() || `Atendimento avaliado com ${notaSelecionadaPedido} estrelas!`;
+            const body = {
+                status: `Concluído ⭐${notaSelecionadaPedido}`,
+                avaliacaoNota: notaSelecionadaPedido,
+                avaliacaoComentario: comentario,
+                descricaoProblema: `${pedidoAtual.descricaoProblema.split(' [Avaliado')[0]} [Avaliado: ${'⭐'.repeat(notaSelecionadaPedido)} - "${comentario}"]`
+            };
+
+            const res = await fetch(`/api/agendamentos/${pedidoAtual.id}`, {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(body)
+            });
+            const atualizado = await res.json();
+            registrarLog('PUT (UPDATE + AVALIAÇÃO 1-5⭐)', `/api/agendamentos/${pedidoAtual.id}`, atualizado);
+            await carregarDadosApi();
+            preencherTelaConfirmacao(atualizado);
+            mostrarToast(`⭐ Avaliação ${notaSelecionadaPedido} estrelas salva na API!`);
+        }
+
+        async function editarEnderecoPut() {
+            if (!pedidoAtual) return;
+            const novoEnd = prompt('Informe o novo endereço para o Pedido #' + pedidoAtual.id + ':', pedidoAtual.endereco);
+            if (!novoEnd) return;
+            const res = await fetch(`/api/agendamentos/${pedidoAtual.id}`, {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ endereco: novoEnd })
+            });
+            const atualizado = await res.json();
+            registrarLog('PUT (UPDATE ENDEREÇO)', `/api/agendamentos/${pedidoAtual.id}`, atualizado);
+            await carregarDadosApi();
+            preencherTelaConfirmacao(atualizado);
+            mostrarToast(`✅ Endereço atualizado via PUT!`);
+        }
+
+        async function cancelarPedidoDelete(idOpcional) {
+            const idAlvo = idOpcional || (pedidoAtual && pedidoAtual.id);
+            if (!idAlvo) return;
+            if (!confirm(`Deseja cancelar e excluir o Pedido #${idAlvo} na API (DELETE)?`)) return;
+
+            await fetch(`/api/agendamentos/${idAlvo}`, { method: 'DELETE' });
+            registrarLog('DELETE (DELETE)', `/api/agendamentos/${idAlvo}`, { RemovidoId: idAlvo, status: '204 No Content' });
+            await carregarDadosApi();
+            mostrarToast(`🗑️ Pedido #${idAlvo} excluído via DELETE!`);
+            abrirTelaHistoricoPedidos();
+        }
+
+        /* TELA 5: HISTÓRICO DE TODOS OS PEDIDOS SALVOS */
+        async function abrirTelaHistoricoPedidos() {
+            const queryEmail = (usuarioLogado && usuarioLogado.email) ? `?emailCliente=${encodeURIComponent(usuarioLogado.email)}` : '';
+            const res = await fetch('/api/agendamentos' + queryEmail);
+            agendamentos = await res.json();
+            registrarLog('GET (HISTÓRICO EXCLUSIVO)', '/api/agendamentos' + queryEmail, agendamentos);
+            document.getElementById('count-pedidos').textContent = agendamentos.length;
+
+            const cont = document.getElementById('lista-historico-pedidos');
+            cont.innerHTML = '';
+
+            if (agendamentos.length === 0) {
+                cont.innerHTML = `<div class="card" style="text-align:center; color:#6B7280; padding: 24px;">Nenhum pedido registrado no momento.</div>`;
+            } else {
+                agendamentos.forEach(p => {
+                    const isConcluido = (p.status || '').toLowerCase().includes('conclu');
+                    const badgeBg = isConcluido ? '#DCFCE7' : '#DBEAFE';
+                    const badgeColor = isConcluido ? '#15803D' : '#1D4ED8';
+                    const div = document.createElement('div');
+                    div.className = 'card';
+                    div.style.cssText = 'display: flex; flex-direction: column; gap: 6px; border-left: 4px solid #2563EB;';
+                    div.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-weight: 800; font-size: 14px; color: #1F2937;">Pedido #${p.id} • ${p.nomePrestador}</span>
+                            <span style="background: ${badgeBg}; color: ${badgeColor}; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 700;">${p.status}</span>
+                        </div>
+                        <div style="font-size: 12px; color: #4B5563;">🛠️ ${p.servico}</div>
+                        <div style="font-size: 12px; color: #4B5563;">📅 ${p.data} às ${p.horario} • 📍 ${p.endereco}</div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; padding-top: 6px; border-top: 1px solid #F3F4F6;">
+                            <span style="font-weight: 800; font-size: 14px; color: #2563EB;">${p.valorTotal}</span>
+                            <div style="display: flex; gap: 6px;">
+                                <button class="btn btn-green" style="width: auto; height: 30px; padding: 0 10px; font-size: 11px;" onclick="gerenciarPedidoDoHistorico(${p.id})">
+                                    ⭐ Avaliar / Gerenciar
+                                </button>
+                                <button class="btn btn-red" style="width: auto; height: 30px; padding: 0 10px; font-size: 11px;" onclick="cancelarPedidoDelete(${p.id})">
+                                    🗑️
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    cont.appendChild(div);
+                });
+            }
+
+            irParaTela('screen-pedidos');
+        }
+
+        function gerenciarPedidoDoHistorico(id) {
+            const encontrado = agendamentos.find(x => x.id === id);
+            if (!encontrado) return;
+            preencherTelaConfirmacao(encontrado);
+            irParaTela('screen-confirmation');
+        }
+
+        async function testarEndpoint(metodo, url) {
+            const res = await fetch(url);
+            const data = await res.json();
+            registrarLog(metodo, url, data);
+        }
+
+        // Carregar dados iniciais ao abrir
+        carregarDadosApi();
+    </script>
+</body>
+</html>
