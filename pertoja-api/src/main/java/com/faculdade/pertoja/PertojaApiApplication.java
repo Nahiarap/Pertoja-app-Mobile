@@ -1,3 +1,10 @@
+/*
+ * Projeto PertoJá — Aplicativo Mobile Android + API REST Spring Boot
+ * Desenvolvido por:
+ * - Nahiara Pedrosa Vitalino Torreão
+ * - Luiza Santiago Leite da Silva
+ * - Carlos Eduardo Ferreira Marques
+ */
 package com.faculdade.pertoja;
 
 import org.springframework.boot.SpringApplication;
