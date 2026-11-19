@@ -5,7 +5,7 @@
  * - Luiza Santiago Leite da Silva
  * - Carlos Eduardo Ferreira Marques
  */
-package com.faculdade.pertoja;
+package com.faculdade.pertoja.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.faculdade.pertoja.R;
+import com.faculdade.pertoja.util.UiHelper;
 
 import java.util.Locale;
 
@@ -55,7 +58,7 @@ public class CallActivity extends AppCompatActivity {
         Button btnVivaVoz = findViewById(R.id.btnCallVivaVoz);
         Button btnDesligar = findViewById(R.id.btnDesligarCall);
 
-        if (imgFoto != null) imgFoto.setImageResource(ApiClient.obterDrawableFoto(fotoChave));
+        if (imgFoto != null) imgFoto.setImageResource(UiHelper.obterDrawableFoto(fotoChave));
         if (txtNome != null) txtNome.setText(nome);
         if (txtProfissao != null) txtProfissao.setText(profissao);
         if (txtNumero != null) txtNumero.setText(telefone);

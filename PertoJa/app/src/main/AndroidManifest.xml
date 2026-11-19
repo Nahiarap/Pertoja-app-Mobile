@@ -18,7 +18,7 @@
 
         <!-- Tela de Login inicia primeiro -->
         <activity
-            android:name=".LoginActivity"
+            android:name=".activity.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,31 +27,31 @@
         </activity>
 
         <!-- Tela de Cadastro -->
-        <activity android:name=".CadastroActivity" android:exported="false" />
+        <activity android:name=".activity.CadastroActivity" android:exported="false" />
 
         <!-- Tela de Perfil / Edição de Cadastro do Cliente -->
-        <activity android:name=".MeuPerfilActivity" android:exported="false" />
+        <activity android:name=".activity.MeuPerfilActivity" android:exported="false" />
 
         <!-- Tela 1 (Home com 9 Profissionais) -->
-        <activity android:name=".MainActivity" android:exported="false" />
+        <activity android:name=".activity.MainActivity" android:exported="false" />
 
         <!-- Tela 2 (Perfil + Avaliação 1 a 5 Estrelas) -->
-        <activity android:name=".ProfileActivity" android:exported="false" />
+        <activity android:name=".activity.ProfileActivity" android:exported="false" />
 
         <!-- Tela 3 (Agendamento) -->
-        <activity android:name=".ScheduleActivity" android:exported="false" />
+        <activity android:name=".activity.ScheduleActivity" android:exported="false" />
 
         <!-- Tela 4 (Confirmação e Gestão CRUD) -->
-        <activity android:name=".ConfirmationActivity" android:exported="false" />
+        <activity android:name=".activity.ConfirmationActivity" android:exported="false" />
 
         <!-- Tela 5 (Histórico Completo de Todos os Pedidos) -->
-        <activity android:name=".PedidosActivity" android:exported="false" />
+        <activity android:name=".activity.PedidosActivity" android:exported="false" />
 
         <!-- Tela 6 (Conversa de WhatsApp) -->
-        <activity android:name=".WhatsappActivity" android:exported="false" />
+        <activity android:name=".activity.WhatsappActivity" android:exported="false" />
 
         <!-- Tela 7 (Ligação Telefônica) -->
-        <activity android:name=".CallActivity" android:exported="false" />
+        <activity android:name=".activity.CallActivity" android:exported="false" />
 
     </application>
 

@@ -5,15 +5,11 @@
  * - Luiza Santiago Leite da Silva
  * - Carlos Eduardo Ferreira Marques
  */
-package com.faculdade.pertoja;
+package com.faculdade.pertoja.network;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
-import android.widget.EditText;
-import android.widget.ImageView;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -70,20 +66,6 @@ public class ApiClient {
         }
     }
 
-    public static class ApiResponse {
-        public final boolean sucesso;
-        public final int codigoHttp;
-        public final String corpo;
-        public final String urlUsada;
-
-        public ApiResponse(boolean sucesso, int codigoHttp, String corpo, String urlUsada) {
-            this.sucesso = sucesso;
-            this.codigoHttp = codigoHttp;
-            this.corpo = corpo;
-            this.urlUsada = urlUsada;
-        }
-    }
-
     public static ApiResponse get(String caminho) {
         return requisitar("GET", caminho, null);
     }
@@ -98,45 +80,6 @@ public class ApiClient {
 
     public static ApiResponse delete(String caminho) {
         return requisitar("DELETE", caminho, null);
-    }
-
-    public static int obterDrawableFoto(String fotoChave) {
-        if (fotoChave == null) return R.drawable.castiel;
-        switch (fotoChave.toLowerCase()) {
-            case "dean": return R.drawable.dean;
-            case "samuelspn": return R.drawable.samuel;
-            case "bobby": return R.drawable.av_bobby;
-            case "carlos":
-            case "avatar_homem":
-                return R.drawable.av_carlos;
-            case "rafael": return R.drawable.av_rafael;
-            case "charlie": return R.drawable.av_charlie;
-            case "helena":
-            case "avatar_mulher":
-                return R.drawable.av_helena;
-            case "camila":
-            case "avatar_mulher2":
-                return R.drawable.av_camila;
-            default: return R.drawable.castiel;
-        }
-    }
-
-    public static void configurarOlhoSenha(EditText editSenha, ImageView btnOlho) {
-        if (editSenha == null || btnOlho == null) return;
-        final boolean[] visivel = {false};
-        btnOlho.setOnClickListener(v -> {
-            visivel[0] = !visivel[0];
-            if (visivel[0]) {
-                editSenha.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                btnOlho.setImageResource(R.drawable.ic_eye_open);
-            } else {
-                editSenha.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                btnOlho.setImageResource(R.drawable.ic_eye_off);
-            }
-            if (editSenha.getText() != null) {
-                editSenha.setSelection(editSenha.getText().length());
-            }
-        });
     }
 
     private static ApiResponse requisitar(String metodo, String caminho, String jsonBody) {

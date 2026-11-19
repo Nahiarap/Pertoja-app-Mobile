@@ -5,15 +5,17 @@
  * - Luiza Santiago Leite da Silva
  * - Carlos Eduardo Ferreira Marques
  */
-package com.faculdade.pertoja;
+package com.faculdade.pertoja.controller;
 
+import com.faculdade.pertoja.model.DatabaseState;
+import com.faculdade.pertoja.model.Usuario;
+import com.faculdade.pertoja.service.PersistenciaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/usuarios")
@@ -25,7 +27,7 @@ public class UsuarioController {
     }
 
     private static synchronized void garantirDadosIniciais() {
-        PersistenciaService.DatabaseState db = PersistenciaService.getState();
+        DatabaseState db = PersistenciaService.getState();
         if (db.usuarios.isEmpty()) {
             db.usuarios.add(new Usuario(
                     db.nextUsuarioId++,
@@ -61,35 +63,6 @@ public class UsuarioController {
         }
     }
 
-    public static class Usuario {
-        public Long id;
-        public String nome;
-        public String email;
-        public String telefone;
-        public String senha;
-        public String tipoPerfil; // "Cliente" ou "Prestador"
-        public String categoria;  // "eletricista", "encanador" ou "limpeza" (quando Prestador)
-        public String profissao;
-        public String precoBase;
-        public String fotoBase64;
-        public String fotoAvatar;
-
-        public Usuario() {
-        }
-
-        public Usuario(Long id, String nome, String email, String telefone, String senha,
-                       String tipoPerfil, String fotoBase64, String fotoAvatar) {
-            this.id = id;
-            this.nome = nome;
-            this.email = email;
-            this.telefone = telefone;
-            this.senha = senha;
-            this.tipoPerfil = tipoPerfil;
-            this.fotoBase64 = fotoBase64;
-            this.fotoAvatar = fotoAvatar;
-        }
-    }
-
     // READ (Listar todos os usuários)
     @GetMapping
     public List<Usuario> listarUsuarios() {
@@ -120,7 +93,7 @@ public class UsuarioController {
         }
 
         String emailLimpo = novo.email.trim().toLowerCase();
-        PersistenciaService.DatabaseState db = PersistenciaService.getState();
+        DatabaseState db = PersistenciaService.getState();
 
         for (Usuario existente : db.usuarios) {
             if (existente.email != null && existente.email.trim().equalsIgnoreCase(emailLimpo)) {
@@ -189,7 +162,7 @@ public class UsuarioController {
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizarUsuario(@PathVariable("id") Long id, @RequestBody Usuario atualizado) {
         garantirDadosIniciais();
-        PersistenciaService.DatabaseState db = PersistenciaService.getState();
+        DatabaseState db = PersistenciaService.getState();
 
         for (Usuario u : db.usuarios) {
             if (u.id.equals(id)) {

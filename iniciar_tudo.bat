@@ -24,7 +24,7 @@ if not errorlevel 1 (
     echo Celular detectado! Instalando e abrindo o app PertoJa...
     adb reverse tcp:8080 tcp:8080
     adb install -r "%~dp0PertoJa\app\build\outputs\apk\debug\app-debug.apk"
-    adb shell am start -n com.faculdade.pertoja/.LoginActivity
+    adb shell am start -n com.faculdade.pertoja/.activity.LoginActivity
 )
 
 echo.

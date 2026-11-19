@@ -5,7 +5,7 @@
  * - Luiza Santiago Leite da Silva
  * - Carlos Eduardo Ferreira Marques
  */
-package com.faculdade.pertoja;
+package com.faculdade.pertoja.activity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -23,6 +23,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+
+import com.faculdade.pertoja.R;
+import com.faculdade.pertoja.network.ApiClient;
+import com.faculdade.pertoja.network.ApiResponse;
+import com.faculdade.pertoja.util.UiHelper;
 
 import org.json.JSONObject;
 
@@ -90,7 +95,7 @@ public class ScheduleActivity extends AppCompatActivity {
         if (txtProfissao != null) txtProfissao.setText(profissaoPrestador + " • ⭐ 4.8 • " + precoBase);
 
         if (imgPerfil != null) {
-            imgPerfil.setImageResource(ApiClient.obterDrawableFoto(fotoChave));
+            imgPerfil.setImageResource(UiHelper.obterDrawableFoto(fotoChave));
         }
 
         // Spinner de serviços com texto escuro legível
@@ -120,7 +125,6 @@ public class ScheduleActivity extends AppCompatActivity {
             editHorario.setText("14:30");
             editHorario.setFocusable(false);
             editHorario.setClickable(true);
-            editData.setOnClickListener(v -> abrirSeletorData());
             editHorario.setOnClickListener(v -> abrirSeletorHora());
         }
 
@@ -186,7 +190,7 @@ public class ScheduleActivity extends AppCompatActivity {
                         json.put("status", "Confirmado");
 
                         String cacheKey = "agendamentos_cache_" + emailCliente.toLowerCase(Locale.ROOT);
-                        ApiClient.ApiResponse resp = ApiClient.post("/api/agendamentos", json.toString());
+                        ApiResponse resp = ApiClient.post("/api/agendamentos", json.toString());
                         if (resp.sucesso && !resp.corpo.isEmpty()) {
                             JSONObject criado = new JSONObject(resp.corpo);
                             idGerado = criado.optLong("id", 1L);

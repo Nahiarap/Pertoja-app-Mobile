@@ -5,15 +5,15 @@
  * - Luiza Santiago Leite da Silva
  * - Carlos Eduardo Ferreira Marques
  */
-package com.faculdade.pertoja;
+package com.faculdade.pertoja.service;
 
+import com.faculdade.pertoja.model.DatabaseState;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.SerializationFeature;
 import tools.jackson.databind.json.JsonMapper;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 public class PersistenciaService {
 
@@ -21,15 +21,6 @@ public class PersistenciaService {
     private static final ObjectMapper mapper = JsonMapper.builder()
             .enable(SerializationFeature.INDENT_OUTPUT)
             .build();
-
-    public static class DatabaseState {
-        public long nextUsuarioId = 1;
-        public long nextPrestadorId = 1;
-        public long nextAgendamentoId = 1;
-        public List<UsuarioController.Usuario> usuarios = new ArrayList<>();
-        public List<PrestadorController.Prestador> prestadores = new ArrayList<>();
-        public List<AgendamentoController.Agendamento> agendamentos = new ArrayList<>();
-    }
 
     private static DatabaseState state;
 

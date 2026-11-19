@@ -10,10 +10,16 @@ Projeto Final integrado das disciplinas de **Linguagem de Programação Mobile**
 ---
 
 ## 📁 Estrutura do Repositório
-- **`PertoJa/`** — Aplicativo Mobile Nativo Android (Java 11, XML, Material Design 3, ViewBinding) com consumo REST via `HttpURLConnection` (`ApiClient.java`).
-- **`pertoja-api/`** — API REST Backend em Java 25 + Spring Boot 4.1.2 com persistência em disco (`PersistenciaService.java`) e simulador web interativo em `http://localhost:8080`.
+- **`PertoJa/`** — Aplicativo Mobile Nativo Android (Java 11, XML, Material Design 3, ViewBinding) organizado nos pacotes:
+  - `activity/` — As 10 telas do app (`LoginActivity`, `CadastroActivity`, `MainActivity`, `MeuPerfilActivity`, `ProfileActivity`, `ScheduleActivity`, `ConfirmationActivity`, `PedidosActivity`, `WhatsappActivity`, `CallActivity`)
+  - `network/` — Comunicação REST via `HttpURLConnection` (`ApiClient`, `ApiResponse`)
+  - `util/` — Utilitários visuais reutilizáveis (`UiHelper`)
+- **`pertoja-api/`** — API REST Backend em Java 25 + Spring Boot 4.1.2 com simulador web interativo em `http://localhost:8080`, organizada nos pacotes:
+  - `controller/` — Endpoints REST (`UsuarioController`, `PrestadorController`, `AgendamentoController`, `StatusController`)
+  - `model/` — Modelos de dados (`Usuario`, `Prestador`, `AvaliacaoItem`, `Agendamento`, `DatabaseState`)
+  - `service/` — Persistência em disco em JSON (`PersistenciaService`)
 - **`PertoJa_Regras_de_Negocio_e_Arquitetura.docx`** — Documento completo de regras de negócio, critérios de avaliação e arquitetura do projeto.
-- **`Documento_Final_Entrega_Projeto_Inovacao_IV_PertoJa . (1).pdf`** — Documentação de planejamento ágil (Product Backlog, User Stories e Modelo de Dados).
+- **`iniciar_tudo.bat`** — Inicializador rápido para subir a API Spring Boot, abrir o painel web e conectar o celular via USB (`adb reverse`).
 
 ---
 

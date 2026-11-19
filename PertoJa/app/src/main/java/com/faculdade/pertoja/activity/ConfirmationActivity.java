@@ -5,7 +5,7 @@
  * - Luiza Santiago Leite da Silva
  * - Carlos Eduardo Ferreira Marques
  */
-package com.faculdade.pertoja;
+package com.faculdade.pertoja.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.faculdade.pertoja.R;
+import com.faculdade.pertoja.network.ApiClient;
 
 import org.json.JSONObject;
 

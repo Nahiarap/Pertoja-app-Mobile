@@ -5,8 +5,13 @@
  * - Luiza Santiago Leite da Silva
  * - Carlos Eduardo Ferreira Marques
  */
-package com.faculdade.pertoja;
+package com.faculdade.pertoja.controller;
 
+import com.faculdade.pertoja.model.AvaliacaoItem;
+import com.faculdade.pertoja.model.DatabaseState;
+import com.faculdade.pertoja.model.Prestador;
+import com.faculdade.pertoja.model.Usuario;
+import com.faculdade.pertoja.service.PersistenciaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +31,7 @@ public class PrestadorController {
     }
 
     private static synchronized void garantirDadosIniciais() {
-        PersistenciaService.DatabaseState db = PersistenciaService.getState();
+        DatabaseState db = PersistenciaService.getState();
         if (db.prestadores.isEmpty()) {
             // 1. ELETRICISTAS (3 profissionais)
             db.prestadores.add(new Prestador(
@@ -204,67 +209,10 @@ public class PrestadorController {
         }
     }
 
-    public static class AvaliacaoItem {
-        public String cliente;
-        public String emailCliente;
-        public int estrelas;
-        public String comentario;
-        public String data;
-        public String fotoCliente;
-        public String fotoBase64;
-
-        public AvaliacaoItem() {
-        }
-
-        public AvaliacaoItem(String cliente, int estrelas, String comentario, String data, String fotoCliente, String fotoBase64) {
-            this.cliente = cliente;
-            this.estrelas = estrelas;
-            this.comentario = comentario;
-            this.data = data;
-            this.fotoCliente = fotoCliente;
-            this.fotoBase64 = fotoBase64;
-        }
-    }
-
-    public static class Prestador {
-        public Long id;
-        public String nome;
-        public String profissao;
-        public String categoria;
-        public Double avaliacao;
-        public Integer avaliacoesCount;
-        public String distancia;
-        public String precoBase;
-        public String sobre;
-        public String telefone;
-        public String fotoChave;
-        public List<AvaliacaoItem> avaliacoesLista = new ArrayList<>();
-
-        public Prestador() {
-        }
-
-        public Prestador(Long id, String nome, String profissao, String categoria, Double avaliacao,
-                         Integer avaliacoesCount, String distancia, String precoBase, String sobre,
-                         String telefone, String fotoChave, List<AvaliacaoItem> avaliacoesLista) {
-            this.id = id;
-            this.nome = nome;
-            this.profissao = profissao;
-            this.categoria = categoria;
-            this.avaliacao = avaliacao;
-            this.avaliacoesCount = avaliacoesCount;
-            this.distancia = distancia;
-            this.precoBase = precoBase;
-            this.sobre = sobre;
-            this.telefone = telefone;
-            this.fotoChave = fotoChave;
-            this.avaliacoesLista = avaliacoesLista != null ? avaliacoesLista : new ArrayList<>();
-        }
-    }
-
     public static synchronized Prestador registrarNovoPrestadorDeUsuario(
             String nome, String categoria, String profissao, String precoBase, String telefone, String fotoChave) {
         garantirDadosIniciais();
-        PersistenciaService.DatabaseState db = PersistenciaService.getState();
+        DatabaseState db = PersistenciaService.getState();
 
         String catNorm = (categoria != null && !categoria.trim().isEmpty())
                 ? categoria.trim().toLowerCase()
@@ -338,7 +286,7 @@ public class PrestadorController {
 
         // Tenta buscar a foto real do perfil do cliente cadastrado no banco
         if (fotoBase64Final.isEmpty() || fotoAvatarFinal.isEmpty()) {
-            for (UsuarioController.Usuario u : UsuarioController.getListaInterna()) {
+            for (Usuario u : UsuarioController.getListaInterna()) {
                 boolean matchEmail = emailCliente != null && !emailCliente.isEmpty()
                         && u.email != null && u.email.equalsIgnoreCase(emailCliente.trim());
                 boolean matchNome = nomeCliente != null && !nomeCliente.isEmpty()
@@ -408,7 +356,7 @@ public class PrestadorController {
     @PostMapping
     public ResponseEntity<Prestador> criarPrestador(@RequestBody Prestador novo) {
         garantirDadosIniciais();
-        PersistenciaService.DatabaseState db = PersistenciaService.getState();
+        DatabaseState db = PersistenciaService.getState();
         novo.id = db.nextPrestadorId++;
         if (novo.categoria == null || novo.categoria.isEmpty()) novo.categoria = "eletricista";
         if (novo.avaliacao == null || novo.avaliacao <= 0) novo.avaliacao = 5.0;

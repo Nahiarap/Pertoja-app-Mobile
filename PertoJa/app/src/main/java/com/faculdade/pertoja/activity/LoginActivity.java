@@ -5,7 +5,7 @@
  * - Luiza Santiago Leite da Silva
  * - Carlos Eduardo Ferreira Marques
  */
-package com.faculdade.pertoja;
+package com.faculdade.pertoja.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,7 +16,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.faculdade.pertoja.databinding.ActivityLoginBinding;
+import com.faculdade.pertoja.network.ApiClient;
+import com.faculdade.pertoja.network.ApiResponse;
+import com.faculdade.pertoja.util.UiHelper;
 
 import org.json.JSONObject;
 
@@ -45,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        ApiClient.configurarOlhoSenha(binding.editSenha, binding.btnOlhoSenhaLogin);
+        UiHelper.configurarOlhoSenha(binding.editSenha, binding.btnOlhoSenhaLogin);
 
         String ultimoEmail = prefs.getString("email_usuario", "");
         if (!ultimoEmail.isEmpty()) {
@@ -78,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
             Handler handler = new Handler(Looper.getMainLooper());
 
             executor.execute(() -> {
-                ApiClient.ApiResponse resp = null;
+                ApiResponse resp = null;
                 try {
                     JSONObject body = new JSONObject();
                     body.put("email", email);
@@ -87,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                 } catch (Exception ignored) {
                 }
 
-                final ApiClient.ApiResponse respostaFinal = resp;
+                final ApiResponse respostaFinal = resp;
 
                 handler.post(() -> {
                     binding.btnLogin.setEnabled(true);

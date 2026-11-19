@@ -5,8 +5,11 @@
  * - Luiza Santiago Leite da Silva
  * - Carlos Eduardo Ferreira Marques
  */
-package com.faculdade.pertoja;
+package com.faculdade.pertoja.controller;
 
+import com.faculdade.pertoja.model.Agendamento;
+import com.faculdade.pertoja.model.DatabaseState;
+import com.faculdade.pertoja.service.PersistenciaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +27,7 @@ public class AgendamentoController {
     }
 
     private static synchronized void garantirDadosIniciais() {
-        PersistenciaService.DatabaseState db = PersistenciaService.getState();
+        DatabaseState db = PersistenciaService.getState();
         if (db.agendamentos.isEmpty()) {
             Agendamento a1 = new Agendamento(
                     db.nextAgendamentoId++,
@@ -85,47 +88,6 @@ public class AgendamentoController {
         }
     }
 
-    public static class Agendamento {
-        public Long id;
-        public String nomeCliente;
-        public String emailCliente;
-        public String nomePrestador;
-        public String profissaoPrestador;
-        public String servico;
-        public String data;
-        public String horario;
-        public String endereco;
-        public String descricaoProblema;
-        public Boolean emergenciaSos;
-        public String valorTotal;
-        public String status;
-        public Integer avaliacaoNota;
-        public String avaliacaoComentario;
-
-        public Agendamento() {
-        }
-
-        public Agendamento(Long id, String nomeCliente, String nomePrestador, String profissaoPrestador,
-                           String servico, String data, String horario, String endereco,
-                           String descricaoProblema, Boolean emergenciaSos, String valorTotal,
-                           String status, Integer avaliacaoNota, String avaliacaoComentario) {
-            this.id = id;
-            this.nomeCliente = nomeCliente;
-            this.nomePrestador = nomePrestador;
-            this.profissaoPrestador = profissaoPrestador;
-            this.servico = servico;
-            this.data = data;
-            this.horario = horario;
-            this.endereco = endereco;
-            this.descricaoProblema = descricaoProblema;
-            this.emergenciaSos = emergenciaSos;
-            this.valorTotal = valorTotal;
-            this.status = status;
-            this.avaliacaoNota = avaliacaoNota;
-            this.avaliacaoComentario = avaliacaoComentario;
-        }
-    }
-
     // READ (Listar pedidos EXCLUSIVOS do cliente logado)
     @GetMapping
     public List<Agendamento> listarAgendamentos(@RequestParam(value = "emailCliente", required = false) String emailCliente) {
@@ -155,7 +117,7 @@ public class AgendamentoController {
     @PostMapping
     public ResponseEntity<Agendamento> criarAgendamento(@RequestBody Agendamento novo) {
         garantirDadosIniciais();
-        PersistenciaService.DatabaseState db = PersistenciaService.getState();
+        DatabaseState db = PersistenciaService.getState();
         novo.id = db.nextAgendamentoId++;
         if (novo.nomeCliente == null || novo.nomeCliente.isEmpty()) {
             novo.nomeCliente = "Cliente PertoJá";

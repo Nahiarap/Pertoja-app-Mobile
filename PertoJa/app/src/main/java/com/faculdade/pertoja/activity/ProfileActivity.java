@@ -5,7 +5,7 @@
  * - Luiza Santiago Leite da Silva
  * - Carlos Eduardo Ferreira Marques
  */
-package com.faculdade.pertoja;
+package com.faculdade.pertoja.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,6 +27,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+
+import com.faculdade.pertoja.R;
+import com.faculdade.pertoja.network.ApiClient;
+import com.faculdade.pertoja.network.ApiResponse;
+import com.faculdade.pertoja.util.UiHelper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -122,7 +127,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (txtNomePerfil != null) txtNomePerfil.setText(nome);
         if (txtDistanciaPerfil != null) txtDistanciaPerfil.setText("📍 " + distancia + " • 📞 " + telefone);
         if (txtSobreProfile != null) txtSobreProfile.setText(sobre);
-        if (imgPerfil != null) imgPerfil.setImageResource(ApiClient.obterDrawableFoto(fotoChave));
+        if (imgPerfil != null) imgPerfil.setImageResource(UiHelper.obterDrawableFoto(fotoChave));
 
         atualizarTextosAvaliacao();
         renderizarListaAvaliacoes();
@@ -165,7 +170,7 @@ public class ProfileActivity extends AppCompatActivity {
                         payload.put("fotoCliente", fotoAvatar);
                         payload.put("fotoBase64", fotoBase64);
 
-                        ApiClient.ApiResponse resp = ApiClient.post("/api/prestadores/" + idPrestador + "/avaliar", payload.toString());
+                        ApiResponse resp = ApiClient.post("/api/prestadores/" + idPrestador + "/avaliar", payload.toString());
                         if (resp.sucesso && !resp.corpo.isEmpty()) {
                             JSONObject pAtualizado = new JSONObject(resp.corpo);
                             mediaEstrelas = pAtualizado.optDouble("avaliacao", mediaEstrelas);
@@ -251,7 +256,7 @@ public class ProfileActivity extends AppCompatActivity {
         ExecutorService ex = Executors.newSingleThreadExecutor();
         Handler h = new Handler(Looper.getMainLooper());
         ex.execute(() -> {
-            ApiClient.ApiResponse resp = ApiClient.get("/api/prestadores/" + idPrestador);
+            ApiResponse resp = ApiClient.get("/api/prestadores/" + idPrestador);
             if (resp.sucesso && !resp.corpo.isEmpty()) {
                 try {
                     JSONObject p = new JSONObject(resp.corpo);
@@ -336,7 +341,7 @@ public class ProfileActivity extends AppCompatActivity {
                 if (fotoCliente.isEmpty() || "default".equals(fotoCliente)) {
                     fotoCliente = avataresFallback[Math.abs(cliente.hashCode()) % avataresFallback.length];
                 }
-                imgAvatar.setImageResource(ApiClient.obterDrawableFoto(fotoCliente));
+                imgAvatar.setImageResource(UiHelper.obterDrawableFoto(fotoCliente));
             }
             avatarCard.addView(imgAvatar);
             row.addView(avatarCard);

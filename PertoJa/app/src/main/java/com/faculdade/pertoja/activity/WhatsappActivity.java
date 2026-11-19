@@ -5,7 +5,7 @@
  * - Luiza Santiago Leite da Silva
  * - Carlos Eduardo Ferreira Marques
  */
-package com.faculdade.pertoja;
+package com.faculdade.pertoja.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,6 +22,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+
+import com.faculdade.pertoja.R;
+import com.faculdade.pertoja.util.UiHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -77,7 +80,7 @@ public class WhatsappActivity extends AppCompatActivity {
         Button btnQuickOrcamento = findViewById(R.id.btnQuickOrcamento);
 
         if (btnVoltar != null) btnVoltar.setOnClickListener(v -> finish());
-        if (imgFoto != null) imgFoto.setImageResource(ApiClient.obterDrawableFoto(fotoChave));
+        if (imgFoto != null) imgFoto.setImageResource(UiHelper.obterDrawableFoto(fotoChave));
         if (txtNome != null) txtNome.setText(nome);
         if (txtStatus != null) txtStatus.setText("● online • " + profissao);
 

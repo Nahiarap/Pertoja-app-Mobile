@@ -5,7 +5,7 @@
  * - Luiza Santiago Leite da Silva
  * - Carlos Eduardo Ferreira Marques
  */
-package com.faculdade.pertoja;
+package com.faculdade.pertoja.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,6 +24,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+
+import com.faculdade.pertoja.R;
+import com.faculdade.pertoja.network.ApiClient;
+import com.faculdade.pertoja.network.ApiResponse;
+import com.faculdade.pertoja.util.UiHelper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -230,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(150, 150);
         img.setLayoutParams(imgParams);
         img.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        img.setImageResource(ApiClient.obterDrawableFoto(fotoChave));
+        img.setImageResource(UiHelper.obterDrawableFoto(fotoChave));
         row.addView(img);
 
         LinearLayout col = new LinearLayout(this);
@@ -323,8 +328,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            ApiClient.ApiResponse respPrest = ApiClient.get("/api/prestadores");
-            ApiClient.ApiResponse respAgend = ApiClient.get(rotaPedidos);
+            ApiResponse respPrest = ApiClient.get("/api/prestadores");
+            ApiResponse respAgend = ApiClient.get(rotaPedidos);
 
             List<JSONObject> recebidos = new ArrayList<>();
             int qtdPedidos = 0;

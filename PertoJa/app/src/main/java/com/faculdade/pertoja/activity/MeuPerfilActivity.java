@@ -5,7 +5,7 @@
  * - Luiza Santiago Leite da Silva
  * - Carlos Eduardo Ferreira Marques
  */
-package com.faculdade.pertoja;
+package com.faculdade.pertoja.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,6 +28,11 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.faculdade.pertoja.R;
+import com.faculdade.pertoja.network.ApiClient;
+import com.faculdade.pertoja.network.ApiResponse;
+import com.faculdade.pertoja.util.UiHelper;
 
 import org.json.JSONObject;
 
@@ -68,7 +73,7 @@ public class MeuPerfilActivity extends AppCompatActivity {
         editEmail = findViewById(R.id.editMeuEmail);
         editTelefone = findViewById(R.id.editMeuTelefone);
         editNovaSenha = findViewById(R.id.editMinhaNovaSenha);
-        ApiClient.configurarOlhoSenha(editNovaSenha, findViewById(R.id.btnOlhoNovaSenha));
+        UiHelper.configurarOlhoSenha(editNovaSenha, findViewById(R.id.btnOlhoNovaSenha));
         rgTipoPerfil = findViewById(R.id.rgMeuTipoPerfil);
         rbCliente = findViewById(R.id.rbMeuCliente);
         rbPrestador = findViewById(R.id.rbMeuPrestador);
@@ -119,7 +124,7 @@ public class MeuPerfilActivity extends AppCompatActivity {
         ExecutorService ex = Executors.newSingleThreadExecutor();
         Handler h = new Handler(Looper.getMainLooper());
         ex.execute(() -> {
-            ApiClient.ApiResponse resp = ApiClient.get("/api/usuarios/" + usuarioId);
+            ApiResponse resp = ApiClient.get("/api/usuarios/" + usuarioId);
             if (resp.sucesso && !resp.corpo.isEmpty()) {
                 try {
                     JSONObject u = new JSONObject(resp.corpo);
@@ -255,7 +260,7 @@ public class MeuPerfilActivity extends AppCompatActivity {
         ExecutorService ex = Executors.newSingleThreadExecutor();
         Handler h = new Handler(Looper.getMainLooper());
         ex.execute(() -> {
-            ApiClient.ApiResponse resp = null;
+            ApiResponse resp = null;
             try {
                 JSONObject json = new JSONObject();
                 json.put("nome", nome);
@@ -271,7 +276,7 @@ public class MeuPerfilActivity extends AppCompatActivity {
             } catch (Exception ignored) {
             }
 
-            final ApiClient.ApiResponse respostaFinal = resp;
+            final ApiResponse respostaFinal = resp;
             h.post(() -> {
                 btnSalvar.setEnabled(true);
                 btnSalvar.setText("💾 Salvar Alterações");

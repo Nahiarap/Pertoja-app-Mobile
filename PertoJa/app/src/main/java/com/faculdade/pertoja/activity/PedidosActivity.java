@@ -5,7 +5,7 @@
  * - Luiza Santiago Leite da Silva
  * - Carlos Eduardo Ferreira Marques
  */
-package com.faculdade.pertoja;
+package com.faculdade.pertoja.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,6 +23,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+
+import com.faculdade.pertoja.R;
+import com.faculdade.pertoja.network.ApiClient;
+import com.faculdade.pertoja.network.ApiResponse;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -76,7 +80,7 @@ public class PedidosActivity extends AppCompatActivity {
                 }
             }
 
-            ApiClient.ApiResponse resp = ApiClient.get(rota);
+            ApiResponse resp = ApiClient.get(rota);
             handler.post(() -> {
                 String jsonFonte = "";
                 if (resp.sucesso && !resp.corpo.isEmpty()) {

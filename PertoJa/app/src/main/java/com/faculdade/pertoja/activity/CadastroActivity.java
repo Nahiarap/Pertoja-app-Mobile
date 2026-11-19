@@ -5,7 +5,7 @@
  * - Luiza Santiago Leite da Silva
  * - Carlos Eduardo Ferreira Marques
  */
-package com.faculdade.pertoja;
+package com.faculdade.pertoja.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -23,6 +23,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.faculdade.pertoja.R;
+import com.faculdade.pertoja.network.ApiClient;
+import com.faculdade.pertoja.network.ApiResponse;
+import com.faculdade.pertoja.util.UiHelper;
 
 import org.json.JSONObject;
 
@@ -63,8 +68,8 @@ public class CadastroActivity extends AppCompatActivity {
             );
         }
 
-        ApiClient.configurarOlhoSenha(etSenha, findViewById(R.id.btnOlhoSenhaCad));
-        ApiClient.configurarOlhoSenha(etConfirmarSenha, findViewById(R.id.btnOlhoConfirmarCad));
+        UiHelper.configurarOlhoSenha(etSenha, findViewById(R.id.btnOlhoSenhaCad));
+        UiHelper.configurarOlhoSenha(etConfirmarSenha, findViewById(R.id.btnOlhoConfirmarCad));
 
         if (findViewById(R.id.btnVoltarCadastro) != null) {
             findViewById(R.id.btnVoltarCadastro).setOnClickListener(view -> finish());
@@ -122,7 +127,7 @@ public class CadastroActivity extends AppCompatActivity {
             Handler handler = new Handler(Looper.getMainLooper());
 
             executor.execute(() -> {
-                ApiClient.ApiResponse resp = null;
+                ApiResponse resp = null;
                 try {
                     JSONObject json = new JSONObject();
                     json.put("nome", nome);
@@ -142,7 +147,7 @@ public class CadastroActivity extends AppCompatActivity {
                 } catch (Exception ignored) {
                 }
 
-                final ApiClient.ApiResponse respostaFinal = resp;
+                final ApiResponse respostaFinal = resp;
 
                 handler.post(() -> {
                     btnCriarConta.setEnabled(true);
